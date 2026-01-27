@@ -9,6 +9,7 @@
 ## 1. 环境准备
 
 在开始之前，请确保您的系统中已经安装了以下软件：
+
 - [Docker Engine](https://docs.docker.com/engine/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/) (对于 Docker Desktop 用户，它已内置)
 
@@ -38,6 +39,7 @@ docker-compose up -d --build
 # 构建并以后台模式启动所有服务 (Django, MySQL, Elasticsearch)
 docker-compose -f docker-compose.yml -f deploy/docker-compose/docker-compose.es.yml up -d --build
 ```
+
 - **数据持久化**: Elasticsearch 的数据将存储在 `data/elasticsearch` 文件夹中。
 
 ### 步骤 3: 首次运行的初始化操作
@@ -89,25 +91,24 @@ docker run -d \
 
 本项目的大部分配置都通过环境变量来管理。您可以在 `docker-compose.yml` 文件中修改它们，或者在使用 `docker run` 命令时通过 `-e` 参数传入。
 
-| 环境变量名称            | 默认值/示例                                                              | 备注                                                                |
-|-------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------|
-| `DJANGO_SECRET_KEY`     | `your-strong-secret-key`                                                 | **请务必修改为一个随机且复杂的字符串！**                            |
-| `DJANGO_DEBUG`          | `False`                                                                  | 是否开启 Django 的调试模式                                          |
-| `DJANGO_MYSQL_HOST`     | `mysql`                                                                  | 数据库主机名                                                        |
-| `DJANGO_MYSQL_PORT`     | `3306`                                                                   | 数据库端口                                                          |
-| `DJANGO_MYSQL_DATABASE` | `djangoblog`                                                             | 数据库名称                                                          |
-| `DJANGO_MYSQL_USER`     | `root`                                                                   | 数据库用户名                                                        |
-| `DJANGO_MYSQL_PASSWORD` | `djangoblog_123`                                                         | 数据库密码                                                          |
-| `DJANGO_REDIS_URL`      | `redis:6379/0`                                                           | Redis 连接地址 (用于缓存)                                           |
-| `DJANGO_ELASTICSEARCH_HOST` | `elasticsearch:9200`                                                 | Elasticsearch 主机地址                                              |
-| `DJANGO_EMAIL_HOST`     | `smtp.example.org`                                                       | 邮件服务器地址                                                      |
-| `DJANGO_EMAIL_PORT`     | `465`                                                                    | 邮件服务器端口                                                      |
-| `DJANGO_EMAIL_USER`     | `user@example.org`                                                       | 邮件账户                                                            |
-| `DJANGO_EMAIL_PASSWORD` | `your-email-password`                                                    | 邮件密码                                                            |
-| `DJANGO_EMAIL_USE_SSL`  | `True`                                                                   | 是否使用 SSL                                                        |
-| `DJANGO_EMAIL_USE_TLS`  | `False`                                                                  | 是否使用 TLS                                                        |
-| `DJANGO_ADMIN_EMAIL`    | `admin@example.org`                                                      | 接收异常报告的管理员邮箱                                            |
-| `DJANGO_BAIDU_NOTIFY_URL` | `http://data.zz.baidu.com/...`                                         | [百度站长平台](https://ziyuan.baidu.com/linksubmit/index) 的推送接口 |
+| 环境变量名称                | 默认值/示例                    | 备注                                                                 |
+| --------------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| `DJANGO_SECRET_KEY`         | `your-strong-secret-key`       | **请务必修改为一个随机且复杂的字符串！**                             |
+| `DJANGO_DEBUG`              | `False`                        | 是否开启 Django 的调试模式                                           |
+| `DJANGO_MYSQL_HOST`         | `mysql`                        | 数据库主机名                                                         |
+| `DJANGO_MYSQL_PORT`         | `3306`                         | 数据库端口                                                           |
+| `DJANGO_MYSQL_DATABASE`     | `djangoblog`                   | 数据库名称                                                           |
+| `DJANGO_MYSQL_USER`         | `root`                         | 数据库用户名                                                         |
+| `DJANGO_MYSQL_PASSWORD`     | `djangoblog_123`               | 数据库密码                                                           |
+| `DJANGO_REDIS_URL`          | `redis:6379/0`                 | Redis 连接地址 (用于缓存)                                            |
+| `DJANGO_ELASTICSEARCH_HOST` | `elasticsearch:9200`           | Elasticsearch 主机地址                                               |
+| `DJANGO_EMAIL_HOST`         | `smtp.example.org`             | 邮件服务器地址                                                       |
+| `DJANGO_EMAIL_PORT`         | `465`                          | 邮件服务器端口                                                       |
+| `DJANGO_EMAIL_USER`         | `user@example.org`             | 邮件账户                                                             |
+| `DJANGO_EMAIL_PASSWORD`     | `your-email-password`          | 邮件密码                                                             |
+| `DJANGO_EMAIL_USE_SSL`      | `True`                         | 是否使用 SSL                                                         |
+| `DJANGO_EMAIL_USE_TLS`      | `False`                        | 是否使用 TLS                                                         |
+| `DJANGO_ADMIN_EMAIL`        | `admin@example.org`            | 接收异常报告的管理员邮箱                                             |
 
 ---
 

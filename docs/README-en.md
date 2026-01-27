@@ -16,6 +16,11 @@
 
 ---
 
+A fork of [DjangoBlog](https://github.com/liangliangyy/DjangoBlog) with:
+
+- i18n support
+- super powers baked in ;)
+
 DjangoBlog is a high-performance blog platform built with Python 3.10+ and Django 5.2. It not only provides all the core functionalities of a traditional blog but also features a flexible plugin system, allowing you to easily extend and customize your website. Whether you are a personal blogger, a tech enthusiast, or a content creator, DjangoBlog aims to provide a stable, efficient, and easy-to-maintain environment for writing and publishing.
 
 ## ✨ Features
@@ -53,7 +58,7 @@ Ensure you have Python 3.10+ and MySQL/MariaDB installed on your system.
 
 ```bash
 # Clone the project to your local machine
-git clone https://github.com/liangliangyy/DjangoBlog.git
+git clone https://github.com/kagemanjoroge/DjangoBlog.git
 cd DjangoBlog
 
 # Install dependencies
@@ -63,23 +68,25 @@ pip install -r requirements.txt
 ### 3. Project Configuration
 
 - **Database**:
-  Open `djangoblog/settings.py`, locate the `DATABASES` section, and update it with your MySQL connection details.
+  Open `djangoblog/settings.py`, locate the `DATABASES` section, and update it with your Postgresql connection details.
 
   ```python
   DATABASES = {
       'default': {
-          'ENGINE': 'django.db.backends.mysql',
+          'ENGINE': 'django.db.backends.postgresql',
           'NAME': 'djangoblog',
-          'USER': 'root',
+          'USER': 'postgres',
           'PASSWORD': 'your_password',
           'HOST': '127.0.0.1',
-          'PORT': 3306,
+          'PORT': 5432,
       }
   }
   ```
+
   Create the database in MySQL:
-  ```sql
-  CREATE DATABASE `djangoblog` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+  ```bash
+  createdb -u $USER -p djangoblog
   ```
 
 - **More Configurations**:
@@ -198,4 +205,5 @@ A special thanks to **JetBrains** for providing a free open-source license for t
 </p>
 
 ---
+
 > If this project has helped you, please leave your website URL [here](https://github.com/liangliangyy/DjangoBlog/issues/214) to let more people see it. Your feedback is the driving force for my continued updates and maintenance.

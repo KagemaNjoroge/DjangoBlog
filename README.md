@@ -77,7 +77,9 @@ pip install -r requirements.txt
       }
   }
   ```
+
   在 MySQL 中创建数据库:
+
   ```sql
   CREATE DATABASE `djangoblog` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
   ```
@@ -198,4 +200,5 @@ npm run dev
 </p>
 
 ---
+
 > 如果本项目帮助到了你，请在[这里](https://github.com/liangliangyy/DjangoBlog/issues/214)留下你的网址，让更多的人看到。您的回复将会是我继续更新维护下去的动力。
