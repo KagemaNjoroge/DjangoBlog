@@ -19,7 +19,9 @@
 A fork of [DjangoBlog](https://github.com/liangliangyy/DjangoBlog) with:
 
 - i18n support
+- Unnecessary features removed
 - super powers baked in ;)
+-
 
 DjangoBlog is a high-performance blog platform built with Python 3.10+ and Django 5.2. It not only provides all the core functionalities of a traditional blog but also features a flexible plugin system, allowing you to easily extend and customize your website. Whether you are a personal blogger, a tech enthusiast, or a content creator, DjangoBlog aims to provide a stable, efficient, and easy-to-maintain environment for writing and publishing.
 
@@ -62,7 +64,7 @@ git clone https://github.com/kagemanjoroge/DjangoBlog.git
 cd DjangoBlog
 
 # Install dependencies
-pip install -r requirements.txt
+uv sync && source .venv/bin/activate
 ```
 
 ### 3. Project Configuration
@@ -83,7 +85,7 @@ pip install -r requirements.txt
   }
   ```
 
-  Create the database in MySQL:
+  Create the database in Postgresql:
 
   ```bash
   createdb -u $USER -p djangoblog
@@ -181,29 +183,3 @@ We warmly welcome contributions of any kind! If you have great ideas or have fou
 This project is open-sourced under the [MIT License](LICENSE).
 
 ---
-
-## ❤️ Support & Sponsorship
-
-If you find this project helpful and wish to support its continued maintenance and development, please consider buying me a coffee! Your support is my greatest motivation.
-
-<p align="center">
-  <img src="/docs/imgs/alipay.jpg" width="150" alt="Alipay Sponsorship">
-  <img src="/docs/imgs/wechat.jpg" width="150" alt="WeChat Sponsorship">
-</p>
-<p align="center">
-  <i>(Left) Alipay / (Right) WeChat</i>
-</p>
-
-## 🙏 Acknowledgements
-
-A special thanks to **JetBrains** for providing a free open-source license for this project.
-
-<p align="center">
-  <a href="https://www.jetbrains.com/?from=DjangoBlog">
-    <img src="/docs/imgs/pycharm_logo.png" width="150" alt="JetBrains Logo">
-  </a>
-</p>
-
----
-
-> If this project has helped you, please leave your website URL [here](https://github.com/liangliangyy/DjangoBlog/issues/214) to let more people see it. Your feedback is the driving force for my continued updates and maintenance.
