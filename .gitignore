@@ -85,3 +85,6 @@ static/avatar
 img/
 .specify/
 specs/
+
+# environment variables
+.env
