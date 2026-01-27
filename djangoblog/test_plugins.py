@@ -2,8 +2,7 @@
 插件系统测试
 测试插件加载、钩子注册和执行
 """
-import os
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from django.test import TestCase
 
@@ -14,7 +13,6 @@ from djangoblog.plugin_manage.loader import load_plugins
 from djangoblog.test_base import BaseTestCase, PluginTestMixin
 
 # 导入钩子常量
-from djangoblog.plugin_manage.hook_constants import HEAD_RESOURCES_HOOK, BODY_RESOURCES_HOOK
 
 
 class PluginHooksTest(TestCase, PluginTestMixin):
