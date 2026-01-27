@@ -2,7 +2,6 @@
 可复用的测试基类和工具
 提供通用的测试数据创建和断言方法
 """
-from django.contrib.auth.models import Permission
 from django.test import TestCase, Client, RequestFactory
 from django.utils import timezone
 
