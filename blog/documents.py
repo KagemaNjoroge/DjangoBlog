@@ -1,7 +1,7 @@
 import time
 
-import elasticsearch.client
 from django.conf import settings
+import elasticsearch
 from elasticsearch_dsl import Document, InnerDoc, Date, Integer, Long, Text, Object, GeoPoint, Keyword, Boolean
 from elasticsearch_dsl.connections import connections
 
