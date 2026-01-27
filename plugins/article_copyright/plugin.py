@@ -4,10 +4,10 @@ from djangoblog.plugin_manage.hook_constants import ARTICLE_CONTENT_HOOK_NAME
 
 
 class ArticleCopyrightPlugin(BasePlugin):
-    PLUGIN_NAME = '文章结尾版权声明'
-    PLUGIN_DESCRIPTION = '一个在文章正文末尾添加版权声明的插件。'
-    PLUGIN_VERSION = '0.2.0'
-    PLUGIN_AUTHOR = 'liangliangyy'
+    PLUGIN_NAME = "文章结尾版权声明"
+    PLUGIN_DESCRIPTION = "一个在文章正文末尾添加版权声明的插件。"
+    PLUGIN_VERSION = "0.2.0"
+    PLUGIN_AUTHOR = "liangliangyy"
 
     # 2. 实现 register_hooks 方法，专门用于注册钩子
     def register_hooks(self):
@@ -19,16 +19,16 @@ class ArticleCopyrightPlugin(BasePlugin):
         这个方法会被注册到 'the_content' 过滤器钩子上。
         它接收原始内容，并返回添加了版权信息的新内容。
         """
-        article = kwargs.get('article')
+        article = kwargs.get("article")
         if not article:
             return content
-        
+
         # 如果是摘要模式（首页），不添加版权声明
-        is_summary = kwargs.get('is_summary', False)
+        is_summary = kwargs.get("is_summary", False)
         if is_summary:
             return content
 
-        copyright_info = f"\n<hr><p>本文由 {article.author.username} 原创，转载请注明出处。</p>"
+        copyright_info = f"\n<hr><p>This article is original by {article.author.username}. Please indicate the source when reprinting</p>"
         return content + copyright_info
 
 
