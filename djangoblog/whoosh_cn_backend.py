@@ -24,12 +24,10 @@ from haystack.utils import log as logging
 from haystack.utils.app_loading import haystack_get_model
 from jieba.analyse import ChineseAnalyzer
 from whoosh import index
-from whoosh.analysis import StemmingAnalyzer
 from whoosh.fields import BOOLEAN, DATETIME, IDLIST, KEYWORD, NGRAM, NGRAMWORDS, NUMERIC, Schema, TEXT
 from whoosh.fields import ID as WHOOSH_ID
 from whoosh.filedb.filestore import FileStorage, RamStorage
-from whoosh.highlight import ContextFragmenter, HtmlFormatter
-from whoosh.highlight import highlight as whoosh_highlight
+from whoosh.highlight import HtmlFormatter
 from whoosh.qparser import QueryParser
 from whoosh.searching import ResultsPage
 from whoosh.writing import AsyncWriter
