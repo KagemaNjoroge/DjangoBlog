@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
@@ -27,20 +28,32 @@ from blog.views import EsSearchView
 from djangoblog.admin_site import admin_site
 from djangoblog.elasticsearch_backend import ElasticSearchModelSearchForm
 from djangoblog.feeds import DjangoBlogFeed
-from djangoblog.sitemap import ArticleSiteMap, CategorySiteMap, StaticViewSitemap, TagSiteMap, UserSiteMap
+from djangoblog.sitemap import (
+    ArticleSiteMap,
+    CategorySiteMap,
+    StaticViewSitemap,
+    TagSiteMap,
+    UserSiteMap,
+)
+
+from .error_views import (
+    page_not_found_view,
+    server_error_view,
+    permission_denied_view,
+)
 
 sitemaps = {
-
-    'blog': ArticleSiteMap,
-    'Category': CategorySiteMap,
-    'Tag': TagSiteMap,
-    'User': UserSiteMap,
-    'static': StaticViewSitemap
+    "blog": ArticleSiteMap,
+    "Category": CategorySiteMap,
+    "Tag": TagSiteMap,
+    "User": UserSiteMap,
+    "static": StaticViewSitemap,
 }
 
-handler404 = 'blog.views.page_not_found_view'
-handler500 = 'blog.views.server_error_view'
-handle403 = 'blog.views.permission_denied_view'
+
+handler404 = page_not_found_view
+handler500 = server_error_view
+handler403 = permission_denied_view
 
 
 def health_check(request):
@@ -48,31 +61,37 @@ def health_check(request):
     健康检查接口
     简单返回服务健康状态
     """
-    return JsonResponse({
-        'status': 'healthy',
-        'timestamp': time.time()
-    })
+    return JsonResponse({"status": "healthy", "timestamp": time.time()})
+
 
 urlpatterns = [
-    path('i18n/', include('django.conf.urls.i18n')),
-    path('health/', health_check, name='health_check'),
+    path("i18n/", include("django.conf.urls.i18n")),
+    path("health/", health_check, name="health_check"),
 ]
 urlpatterns += i18n_patterns(
-    re_path(r'^admin/', admin_site.urls),
-    re_path(r'', include('blog.urls', namespace='blog')),
-    re_path(r'mdeditor/', include('mdeditor.urls')),
-    re_path(r'', include('comments.urls', namespace='comment')),
-    re_path(r'', include('accounts.urls', namespace='account')),
-    re_path(r'', include('oauth.urls', namespace='oauth')),
-    re_path(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-            name='django.contrib.sitemaps.views.sitemap'),
-    re_path(r'^feed/$', DjangoBlogFeed()),
-    re_path(r'^rss/$', DjangoBlogFeed()),
-    re_path('^search', search_view_factory(view_class=EsSearchView, form_class=ElasticSearchModelSearchForm),
-            name='search'),
-    re_path(r'', include('servermanager.urls', namespace='servermanager')),
-    re_path(r'', include('owntracks.urls', namespace='owntracks'))
-    , prefix_default_language=False) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    re_path(r"^admin/", admin_site.urls),
+    re_path(r"", include("blog.urls", namespace="blog")),
+    re_path(r"mdeditor/", include("mdeditor.urls")),
+    re_path(r"", include("comments.urls", namespace="comment")),
+    re_path(r"", include("accounts.urls", namespace="account")),
+    re_path(r"", include("oauth.urls", namespace="oauth")),
+    re_path(
+        r"^sitemap\.xml$",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
+    re_path(r"^feed/$", DjangoBlogFeed()),
+    re_path(r"^rss/$", DjangoBlogFeed()),
+    re_path(
+        "^search",
+        search_view_factory(
+            view_class=EsSearchView, form_class=ElasticSearchModelSearchForm
+        ),
+        name="search",
+    ),
+    re_path(r"", include("owntracks.urls", namespace="owntracks")),
+    prefix_default_language=False,
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
