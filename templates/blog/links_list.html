@@ -3,14 +3,14 @@
 {% load cache %}
 {% block header %}
 
-    <title>友情链接 | {{ SITE_NAME }}</title>
+    <title>Friendly links | {{ SITE_NAME }}</title>
 
-    <meta name="description" content="本站的友情链接列表，欢迎互换友链。"/>
-    <meta name="keywords" content="友情链接, 友链, {{ SITE_KEYWORDS }}"/>
+    <meta name="description" content="List of Friendly Links on this Site, We welcome link exchanges."/>
+    <meta name="keywords" content="Friendly links, Friendly link, {{ SITE_KEYWORDS }}"/>
     <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:title" content="友情链接 | {{ SITE_NAME }}"/>
-    <meta property="og:description" content="本站的友情链接列表"/>
+    <meta property="og:title" content="Friendly links | {{ SITE_NAME }}"/>
+    <meta property="og:description" content="List of Friendly Links on this Site"/>
     <meta property="og:url" content="{{ request.get_full_path }}"/>
     <meta property="og:site_name" content="{{ SITE_NAME }}"/>
 
@@ -23,7 +23,7 @@
 
                 <header class="archive-header mb-8">
                     <h1 class="archive-title text-3xl font-bold text-gray-900 dark:text-gray-100">
-                        友情链接
+                        Friendly links
                     </h1>
                 </header><!-- .archive-header -->
 

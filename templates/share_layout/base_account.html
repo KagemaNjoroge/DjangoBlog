@@ -4,6 +4,7 @@
 {% load vite_tags %}
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,7 +15,7 @@
 
     <!-- 防闪烁脚本：必须在CSS加载前立即执行 -->
     <script>
-        (function() {
+        (function () {
             const STORAGE_KEY = 'dark-mode-enabled';
             const THEME_ATTR = 'data-theme';
             const ENABLE_SYSTEM = true;
@@ -47,24 +48,23 @@
 
     <!-- 插件CSS文件 -->
     {% compress css %}
-        {% block compress_css %}{% endblock %}
+    {% block compress_css %}{% endblock %}
     {% endcompress %}
 </head>
 
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 min-h-screen flex items-center justify-center p-4" x-data="{ showPassword: false }">
+<body
+    class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 min-h-screen flex items-center justify-center p-4"
+    x-data="{ showPassword: false }">
     {% block content %}{% endblock %}
 
     <!-- 深色模式切换按钮（与主站一致） -->
     <div class="dark-mode-toggle-fixed">
-        <button type="button"
-                id="dark-mode-toggle-btn"
-                class="dark-mode-toggle-btn"
-                aria-label="切换主题"
-                title="切换黑夜模式"
-                @click="window.DarkMode && window.DarkMode.toggle()">
+        <button type="button" id="dark-mode-toggle-btn" class="dark-mode-toggle-btn" aria-label="switch theme"
+            title="Switch to night mode" @click="window.DarkMode && window.DarkMode.toggle()">
             <span class="icon-light">☀️</span>
             <span class="icon-dark">🌙</span>
         </button>
     </div>
 </body>
+
 </html>
