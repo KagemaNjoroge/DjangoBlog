@@ -13,15 +13,13 @@ from oauth.admin import *
 from oauth.models import *
 from owntracks.admin import *
 from owntracks.models import *
-from servermanager.admin import *
-from servermanager.models import *
 
 
 class DjangoBlogAdminSite(AdminSite):
-    site_header = 'djangoblog administration'
-    site_title = 'djangoblog site admin'
+    site_header = "djangoblog administration"
+    site_title = "djangoblog site admin"
 
-    def __init__(self, name='admin'):
+    def __init__(self, name="admin"):
         super().__init__(name)
 
     def has_permission(self, request):
@@ -38,7 +36,7 @@ class DjangoBlogAdminSite(AdminSite):
     #     return urls + my_urls
 
 
-admin_site = DjangoBlogAdminSite(name='admin')
+admin_site = DjangoBlogAdminSite(name="admin")
 
 admin_site.register(Article, ArticlelAdmin)
 admin_site.register(Category, CategoryAdmin)
@@ -47,8 +45,6 @@ admin_site.register(Links, LinksAdmin)
 admin_site.register(SideBar, SideBarAdmin)
 admin_site.register(BlogSettings, BlogSettingsAdmin)
 
-admin_site.register(commands, CommandsAdmin)
-admin_site.register(EmailSendLog, EmailSendLogAdmin)
 
 admin_site.register(BlogUser, BlogUserAdmin)
 
