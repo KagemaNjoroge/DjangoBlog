@@ -49,6 +49,7 @@ sudo mkdir -p /mnt/local-storage-elasticsearch
 # Log out from the node
 exit
 ```
+
 **Note**: If you wish to store data on a different node or use different paths, you must modify the `nodeAffinity` and `local.path` settings in the `deploy/k8s/pv.yaml` file.
 
 After creating the directories, apply the storage-related configurations:
@@ -69,6 +70,7 @@ kubectl apply -f deploy/k8s/pvc.yaml
 Before deploying the application, you need to edit the `deploy/k8s/configmap.yaml` file to modify sensitive information and custom settings.
 
 **It is strongly recommended to change the following fields:**
+
 - `DJANGO_SECRET_KEY`: Change to a random, complex string.
 - `DJANGO_MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD`: Change to your own secure database password.
 
@@ -138,4 +140,4 @@ python manage.py rebuild_index
 exit
 ```
 
-Congratulations! You have successfully deployed DjangoBlog on your Kubernetes cluster. 
+Congratulations! You have successfully deployed DjangoBlog on your Kubernetes cluster.
