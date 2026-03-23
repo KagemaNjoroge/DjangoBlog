@@ -166,8 +166,8 @@
     data-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}" x-data="{ searchOpen: false }">
     <div id="page" class="hfeed site">
         <header id="masthead" class="site-header" role="banner">
-            <div class="header-content">
-                <hgroup>
+            <div class="header-content relative">
+                <hgroup class="text-center flex-1">
                     <h1 class="site-title"><a href="/" title="{{ SITE_NAME }}" rel="home"
                             hx-boost="true">{{ SITE_NAME }}</a>
                     </h1>
@@ -175,7 +175,7 @@
                 </hgroup>
 
                 <!-- 快捷入口图标 -->
-                <div class="header-actions relative">
+                <div class="header-actions absolute right-4 top-1/2 -translate-y-1/2">
                     <!-- 搜索按钮 -->
                     <button type="button" class="header-icon-btn search-toggle"
                         @click="searchOpen = !searchOpen; if (searchOpen) { $nextTick(() => $refs.searchInput.focus()) }"
@@ -212,8 +212,8 @@
                         x-transition:leave-start="opacity-100 transform translate-y-0"
                         x-transition:leave-end="opacity-0 transform -translate-y-2">
                         <form role="search" method="get" action="/search" class="search-form">
-                            <input type="search" name="q" placeholder="Search for articles..." class="search-input" x-ref="searchInput"
-                                @keydown.escape="searchOpen = false">
+                            <input type="search" name="q" placeholder="Search for articles..." class="search-input"
+                                x-ref="searchInput" @keydown.escape="searchOpen = false">
                             <button type="submit" class="search-submit">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
