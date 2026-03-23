@@ -6,7 +6,7 @@
 const NProgress = {
   settings: {
     minimum: 0.08,
-    easing: 'ease',
+    easing: "ease",
     speed: 200,
     trickle: true,
     trickleSpeed: 200,
@@ -26,7 +26,7 @@ const NProgress = {
     this.status = n === 1 ? null : n;
 
     const progress = this.render(!started);
-    const bar = progress.querySelector('.bar');
+    const bar = progress.querySelector(".bar");
     const speed = this.settings.speed;
     const ease = this.settings.easing;
 
@@ -34,11 +34,11 @@ const NProgress = {
 
     this.queue((next) => {
       bar.style.transition = `all ${speed}ms ${ease}`;
-      bar.style.width = n * 100 + '%';
+      bar.style.width = n * 100 + "%";
 
       if (n === 1) {
         progress.style.transition = `all ${speed}ms ${ease}`;
-        progress.style.opacity = '0';
+        progress.style.opacity = "0";
         setTimeout(() => {
           this.remove();
           next();
@@ -52,7 +52,7 @@ const NProgress = {
   },
 
   isStarted() {
-    return typeof this.status === 'number';
+    return typeof this.status === "number";
   },
 
   start() {
@@ -83,7 +83,7 @@ const NProgress = {
       return this.start();
     }
 
-    if (typeof amount !== 'number') {
+    if (typeof amount !== "number") {
       amount = (1 - n) * this.clamp(Math.random() * n, 0.1, 0.95);
     }
 
@@ -96,20 +96,20 @@ const NProgress = {
   },
 
   render(fromStart) {
-    if (this.isRendered()) return document.getElementById('nprogress');
+    if (this.isRendered()) return document.getElementById("nprogress");
 
-    const progress = document.createElement('div');
-    progress.id = 'nprogress';
+    const progress = document.createElement("div");
+    progress.id = "nprogress";
     progress.innerHTML = '<div class="bar"><div class="peg"></div></div>';
 
-    const bar = progress.querySelector('.bar');
+    const bar = progress.querySelector(".bar");
     const perc = fromStart ? 0 : (this.status || 0) * 100;
 
-    bar.style.transition = 'none';
-    bar.style.width = perc + '%';
+    bar.style.transition = "none";
+    bar.style.width = perc + "%";
 
     if (!this.settings.showSpinner) {
-      const spinner = progress.querySelector('.spinner');
+      const spinner = progress.querySelector(".spinner");
       spinner && spinner.remove();
     }
 
@@ -118,12 +118,12 @@ const NProgress = {
   },
 
   remove() {
-    const progress = document.getElementById('nprogress');
+    const progress = document.getElementById("nprogress");
     progress && progress.remove();
   },
 
   isRendered() {
-    return !!document.getElementById('nprogress');
+    return !!document.getElementById("nprogress");
   },
 
   clamp(n, min, max) {
