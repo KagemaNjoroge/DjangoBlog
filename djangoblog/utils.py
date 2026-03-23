@@ -165,8 +165,6 @@ def get_blog_setting():
             setting.show_google_adsense = False
             setting.open_site_comment = True
             setting.analytics_code = ''
-            setting.beian_code = ''
-            setting.show_gongan_code = False
             setting.comment_need_review = False
             setting.save()
         value = BlogSettings.objects.first()

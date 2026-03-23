@@ -94,9 +94,7 @@ class ArticleTest(TestCase):
 
         response = self.client.get(article.get_absolute_url())
         self.assertEqual(response.status_code, 200)
-        from djangoblog.spider_notify import SpiderNotify
 
-        SpiderNotify.notify(article.get_absolute_url())
         response = self.client.get(tag.get_absolute_url())
         self.assertEqual(response.status_code, 200)
 
@@ -123,17 +121,13 @@ class ArticleTest(TestCase):
             Article.objects.filter(author__username="liangliangyy"),
             settings.PAGINATE_BY,
         )
-        self.check_pagination(p, "作者文章归档", "liangliangyy")
+        self.check_pagination(p, "Author article archive", "liangliangyy")
 
         p = Paginator(Article.objects.filter(category=category), settings.PAGINATE_BY)
         self.check_pagination(p, "Category Archive", category.slug)
 
         f = BlogSearchForm()
         f.search()
-        # self.client.login(username='liangliangyy', password='liangliangyy')
-        from djangoblog.spider_notify import SpiderNotify
-
-        SpiderNotify.baidu_notify([article.get_full_url()])
 
         from blog.templatetags.blog_tags import gravatar_url, gravatar
 
