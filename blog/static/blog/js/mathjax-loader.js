@@ -50,7 +50,6 @@
       // 启动配置
       startup: {
         ready() {
-          console.log("MathJax配置完成，开始初始化...");
           MathJax.startup.defaultReady();
 
           // 处理特定区域的数学公式
@@ -68,12 +67,11 @@
           // 等待所有渲染完成
           Promise.all(promises)
             .then(() => {
-              console.log("MathJax渲染完成");
               // 触发自定义事件，通知其他脚本MathJax已就绪
               document.dispatchEvent(new CustomEvent("mathjaxReady"));
             })
             .catch((error) => {
-              console.error("MathJax渲染失败:", error);
+              console.error("MathJax Error:", error);
             });
         },
       },
@@ -92,20 +90,13 @@
    * 加载MathJax库
    */
   function loadMathJax() {
-    console.log("检测到数学公式，开始加载MathJax...");
-
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
     script.async = true;
     script.defer = true;
 
-    script.onload = function () {
-      console.log("MathJax库加载成功");
-    };
-
     script.onerror = function () {
-      console.error("MathJax库加载失败，尝试备用CDN...");
-      // 备用CDN
+      // if mathjax jsdelivr CDN fails, load from cdn.mathjax.org
       const fallbackScript = document.createElement("script");
       fallbackScript.src =
         "https://polyfill.io/v3/polyfill.min.js?features=es6";
@@ -138,7 +129,7 @@
       configureMathJax();
       loadMathJax();
     } else {
-      console.log("未检测到数学公式，跳过MathJax加载");
+      console.log("MathJax: No math formulas detected, skipping load.");
     }
   }
 
