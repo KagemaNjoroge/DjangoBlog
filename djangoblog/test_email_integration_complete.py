@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate
 
 from accounts.models import BlogUser
-from accounts.utils import get_code, verify
+from accounts.utils import verify
 from blog.models import Article, Category, BlogSettings
 from comments.models import Comment
 
