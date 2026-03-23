@@ -1,6 +1,5 @@
 import logging
 # Create your views here.
-from urllib.parse import urlparse
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -88,7 +87,7 @@ def authorize(request):
             user = temp
         except ObjectDoesNotExist:
             pass
-        # facebook的token过长
+        # Facebook token too long
         if type == 'facebook':
             user.token = ''
         if user.email:
@@ -117,16 +116,16 @@ def authorize(request):
                 oauth_user_login_signal.send(
                     sender=authorize.__class__, id=user.id)
                 login(request, author)
-                # 设置session过期时间为2周（默认）
+                # Set the session expiration time to 2 weeks (default)
                 request.session.set_expiry(settings.SESSION_COOKIE_AGE)
-                # 设置登录标记 cookie
+                # Set login token cookie
                 response = HttpResponseRedirect(nexturl)
                 response.set_cookie(
-                    'logged_user',
-                    'true',
+                    "logged_user",
+                    "true",
                     max_age=settings.SESSION_COOKIE_AGE,
-                    httponly=False,  # 允许 JavaScript 访问
-                    samesite='Lax'
+                    httponly=False,  # Allow JavaScript access
+                    samesite="Lax",
                 )
                 return response
         else:
@@ -165,7 +164,7 @@ def emailconfirm(request, id, sign):
         sender=emailconfirm.__class__,
         id=oauthuser.id)
     login(request, author)
-    # 设置session过期时间为2周（默认）
+    # Set the session expiration time to 2 weeks (default)
     request.session.set_expiry(settings.SESSION_COOKIE_AGE)
 
     site = 'http://' + get_current_site().domain
@@ -185,14 +184,14 @@ def emailconfirm(request, id, sign):
         'oauthid': id
     })
     url = url + '?type=success'
-    # 设置登录标记 cookie
+    # Set login cookie
     response = HttpResponseRedirect(url)
     response.set_cookie(
-        'logged_user',
-        'true',
+        "logged_user",
+        "true",
         max_age=settings.SESSION_COOKIE_AGE,
-        httponly=False,  # 允许 JavaScript 访问
-        samesite='Lax'
+        httponly=False,  # Allow JavaScript access
+        samesite="Lax",
     )
     return response
 
