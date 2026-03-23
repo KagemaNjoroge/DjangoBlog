@@ -58,8 +58,8 @@ handler403 = permission_denied_view
 
 def health_check(request):
     """
-    健康检查接口
-    简单返回服务健康状态
+    Health check interface
+    Simply returns the service's health status
     """
     return JsonResponse({"status": "healthy", "timestamp": time.time()})
 

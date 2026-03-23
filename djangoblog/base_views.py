@@ -2,8 +2,7 @@
 # encoding: utf-8
 
 """
-Django Blog 基础视图类
-提供带有常用装饰器的视图基类，减少重复的 dispatch 方法定义
+Django Blog Base View Classes: Provides base view classes with commonly used decorators, reducing repetitive dispatch method definitions.
 """
 
 from django.contrib.auth.decorators import login_required
@@ -16,91 +15,87 @@ from django.views.generic import FormView, RedirectView
 
 class SecureFormView(FormView):
     """
-    安全的 FormView 基类
+    A secure FormView base class
+    Automatically adds CSRF protection, suitable for all views that require form submission.
 
-    自动添加 CSRF 保护，适用于所有需要表单提交的视图
+        Usage:
+            class MyFormView(SecureFormView):
+                form_class = MyForm
+                template_name = 'my_form.html'
 
-    Usage:
-        class MyFormView(SecureFormView):
-            form_class = MyForm
-            template_name = 'my_form.html'
-
-            def form_valid(self, form):
-                # 处理表单数据
-                return super().form_valid(form)
+                def form_valid(self, form):
+                    # Process form data
+                    return super().form_valid(form)
     """
 
     @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs):
-        """添加 CSRF 保护"""
+        """Add CSRF protection"""
         return super().dispatch(*args, **kwargs)
 
 
 class AuthenticatedFormView(FormView):
     """
-    需要登录的 FormView
+    FormView requiring login
+    Automatically checks user login status and adds CSRF protection
+    Unlogged users will be redirected to the login page
 
-    自动检查用户登录状态并添加 CSRF 保护
-    未登录用户会被重定向到登录页面
-
-    Usage:
-        class MyAuthFormView(AuthenticatedFormView):
-            form_class = MyForm
-            template_name = 'my_form.html'
+        Usage:
+            class MyAuthFormView(AuthenticatedFormView):
+                form_class = MyForm
+                template_name = 'my_form.html'
     """
 
     @method_decorator(login_required)
     @method_decorator(csrf_protect)
     def dispatch(self, *args, **kwargs):
-        """添加登录要求和 CSRF 保护"""
+        """Add login requirements and CSRF protection"""
         return super().dispatch(*args, **kwargs)
 
 
 class LoginFormView(FormView):
     """
-    登录专用 FormView
+    Dedicated FormView for Login
+    Includes the following protection measures:
+    - Sensitive parameter protection (password, etc.)
+    - CSRF protection
+    - Disable caching (prevents login status from being cached)
 
-    包含以下保护措施：
-    - 敏感参数保护（password 等）
-    - CSRF 保护
-    - 禁用缓存（防止登录状态被缓存）
+        Usage:
+            class LoginView(LoginFormView):
+                form_class = LoginForm
+                template_name = 'login.html'
 
-    Usage:
-        class LoginView(LoginFormView):
-            form_class = LoginForm
-            template_name = 'login.html'
-
-            def form_valid(self, form):
-                # 处理登录逻辑
-                return super().form_valid(form)
+                def form_valid(self, form):
+                    # Handle login logic
+                    return super().form_valid(form)
     """
 
     @method_decorator(sensitive_post_parameters('password'))
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
-        """添加敏感参数保护、CSRF 保护和禁用缓存"""
+        """Add sensitive parameter protection, CSRF protection, and disable caching."""
         return super().dispatch(request, *args, **kwargs)
 
 
 class LogoutRedirectView(RedirectView):
     """
-    登出专用 RedirectView
+    Dedicated RedirectView for Logout
+    Automatically disables caching to ensure logout operations are not cached.
 
-    自动禁用缓存，确保登出操作不会被缓存
+        Usage:
+            class LogoutView(LogoutRedirectView):
+                url = '/login/'
 
-    Usage:
-        class LogoutView(LogoutRedirectView):
-            url = '/login/'
-
-            def get(self, request, *args, **kwargs):
-                logout(request)
-                return super().get(request, *args, **kwargs)
+                def get(self, request, *args, **kwargs):
+                    logout(request)
+                    return super().get(request, *args, **kwargs)
     """
 
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
-        """禁用缓存"""
+        """Disable caching"""
         return super().dispatch(request, *args, **kwargs)
 
 

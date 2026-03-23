@@ -2,8 +2,7 @@
 # encoding: utf-8
 
 """
-Django Blog 混入类 (Mixins)
-提供可复用的功能模块，减少代码重复
+Django Blog mixins provide reusable functional modules, reducing code duplication.
 """
 
 import logging
@@ -15,101 +14,108 @@ from django.utils.translation import gettext_lazy as _
 logger = logging.getLogger(__name__)
 
 
-# ===== 模型层 Mixin =====
+# ===== Model Layer Mixin =====
+
 
 class TimeStampedModel(models.Model):
     """
-    抽象模型：为所有模型提供统一的时间戳字段
+    Abstract Model: Provides a unified timestamp field for all models
 
-    提供 created_at 和 updated_at 字段，自动管理时间戳
-    继承此模型可以消除重复的时间字段定义
+    Provides `created_at` and `updated_at` fields, automatically managing timestamps
 
-    Usage:
-        class MyModel(TimeStampedModel):
-            name = models.CharField(max_length=100)
+    Inheriting this model eliminates duplicate timestamp field definitions.
+
+        Usage:
+            class MyModel(TimeStampedModel):
+                name = models.CharField(max_length=100)
     """
+
     created_at = models.DateTimeField(
-        _('creation time'),
+        _("creation time"),
         default=now,
         db_index=True,
-        help_text=_('The date and time when this object was created')
+        help_text=_("The date and time when this object was created"),
     )
     updated_at = models.DateTimeField(
-        _('last modify time'),
+        _("last modify time"),
         default=now,
-        help_text=_('The date and time when this object was last modified')
+        help_text=_("The date and time when this object was last modified"),
     )
 
     class Meta:
         abstract = True
-        ordering = ['-created_at']
-        get_latest_by = 'created_at'
+        ordering = ["-created_at"]
+        get_latest_by = "created_at"
 
     def save(self, *args, **kwargs):
         """
-        重写 save 方法，自动更新 updated_at 字段
-
-        注意：如果使用 update_fields 参数，需要明确包含 updated_at
+        Override the `save` method to automatically update the `updated_at` field.
+        Note: If using the `update_fields` parameter, you must explicitly include `updated_at`.
         """
-        # 检查是否是部分更新（指定了 update_fields）
-        update_fields = kwargs.get('update_fields')
+        # Check if it's a partial update (if update_fields are specified).
+        update_fields = kwargs.get("update_fields")
         if update_fields:
-            # 如果指定了 update_fields 但不包含 updated_at，则添加它
-            if 'updated_at' not in update_fields:
-                update_fields = list(update_fields) + ['updated_at']
-                kwargs['update_fields'] = update_fields
+            # If `update_fields` is specified but `update_at` is not included, then add it.
+            if "updated_at" not in update_fields:
+                update_fields = list(update_fields) + ["updated_at"]
+                kwargs["update_fields"] = update_fields
 
-        # 更新时间戳
+        # Update timestamp
         self.updated_at = now()
 
         super().save(*args, **kwargs)
 
 
-# ===== 视图层 Mixin =====
+# ===== View Layer Mixin =====
+
 
 class SlugCachedMixin:
     """
-    Mixin: 缓存 slug 查询结果，避免重复数据库查询
-
-    在同一个请求周期内，多次获取同一个 slug 对应的对象时，
-    只会执行一次数据库查询，后续调用会使用缓存的对象
+    Mixin: Caches slug query results to avoid duplicate database queries.
+    When retrieving the same slug object multiple times within the same request cycle,
+    only one database query will be executed; subsequent calls will use the cached object.
 
     Attributes:
-        slug_url_kwarg: URL 参数名，默认为 'slug'
-        slug_model: 要查询的模型类
 
-    Usage:
-        class MyView(SlugCachedMixin, ListView):
-            slug_url_kwarg = 'category_slug'
-            slug_model = Category
+        slug_url_kwarg: URL parameter name, defaults to 'slug'
 
-            def get_queryset(self):
-                category = self.get_slug_object()
-                return Article.objects.filter(category=category)
+        slug_model: The model class to query
+
+        Usage:
+            class MyView(SlugCachedMixin, ListView):
+                slug_url_kwarg = 'category_slug'
+                slug_model = Category
+
+                def get_queryset(self):
+                    category = self.get_slug_object()
+                    return Article.objects.filter(category=category)
     """
-    slug_url_kwarg = 'slug'
+
+    slug_url_kwarg = "slug"
     slug_model = None
 
     def get_slug_object(self):
         """
-        获取并缓存 slug 对应的对象
+        Retrieves and caches the object corresponding to the slug.
 
         Returns:
-            Model instance: slug 对应的模型实例
+
+            Model instance: The model instance corresponding to the slug.
 
         Raises:
-            Http404: 如果 slug 对应的对象不存在
+
+            Http404: If the object corresponding to the slug does not exist.
         """
-        if not hasattr(self, '_slug_object'):
+        if not hasattr(self, "_slug_object"):
             if self.slug_model is None:
                 raise ValueError(
-                    f'{self.__class__.__name__} must define slug_model attribute'
+                    f"{self.__class__.__name__} must define slug_model attribute"
                 )
 
             slug = self.kwargs.get(self.slug_url_kwarg)
             self._slug_object = get_object_or_404(self.slug_model, slug=slug)
             logger.debug(
-                f'Loaded {self.slug_model.__name__} object: {self._slug_object} (slug={slug})'
+                f"Loaded {self.slug_model.__name__} object: {self._slug_object} (slug={slug})"
             )
 
         return self._slug_object
@@ -117,113 +123,117 @@ class SlugCachedMixin:
 
 class OptimizedArticleQueryMixin:
     """
-    Mixin: 优化文章查询（预加载关联对象）
+    Mixin: Optimize Article Queries (Preload Related Objects)
 
-    使用 select_related 和 prefetch_related 优化文章查询，
-    减少数据库查询次数，避免 N+1 查询问题
+    Optimize article queries using `select_related` and `prefetch_related`,
 
-    Usage:
-        class MyView(OptimizedArticleQueryMixin, ListView):
-            def get_queryset(self):
-                return self.get_optimized_article_queryset().filter(status='p')
+    reducing the number of database queries and avoiding the N+1 query problem.
+
+        Usage:
+            class MyView(OptimizedArticleQueryMixin, ListView):
+                def get_queryset(self):
+                    return self.get_optimized_article_queryset().filter(status='p')
     """
 
     def get_optimized_article_queryset(self):
         """
-        返回优化后的 Article queryset
+        Returns the optimized Article queryset
 
-        使用 select_related 预加载外键关联：
-            - author: 文章作者
-            - category: 文章分类
+        Preloading foreign key relationships using `select_related`:
 
-        使用 prefetch_related 预加载多对多关联：
-            - tags: 文章标签
+        - author: Article author
+
+        - category: Article category
+
+        Preloading many-to-many relationships using `prefetch_related`:
+
+        - tags: Article tags
 
         Returns:
-            QuerySet: 优化后的 Article queryset
+
+            QuerySet: Optimized Article queryset
         """
         from blog.models import Article
 
         return Article.objects.select_related(
-            'author',      # 预加载作者（ForeignKey）
-            'category'     # 预加载分类（ForeignKey）
+            "author",
+            "category",  # Preload Authors (ForeignKey) # Preload Categories (ForeignKey)
         ).prefetch_related(
-            'tags'         # 预加载标签（ManyToMany）
+            "tags"  # Preload tags (ManyToMany)
         )
 
 
 class CachedListViewMixin:
     """
-    Mixin: 为 ListView 提供统一的缓存逻辑
+    Mixin: Provides unified caching logic for ListView
 
-    自动缓存 queryset 结果，减少数据库查询
-    子类需要实现 get_queryset_cache_key() 和 get_queryset_data() 方法
+    Automatically caches queryset results, reducing database queries
 
-    Usage:
-        class MyView(CachedListViewMixin, ListView):
-            def get_queryset_cache_key(self):
-                return f'my_list_{self.page_number}'
+    Subclasses need to implement the `get_queryset_cache_key()` and `get_queryset_data()` methods
 
-            def get_queryset_data(self):
-                return Article.objects.filter(status='p')
+        Usage:
+            class MyView(CachedListViewMixin, ListView):
+                def get_queryset_cache_key(self):
+                    return f'my_list_{self.page_number}'
+
+                def get_queryset_data(self):
+                    return Article.objects.filter(status='p')
     """
 
     def get_queryset_cache_key(self):
         """
-        子类实现：返回缓存 key
+        Subclass implementation: Returns the cache key
 
         Returns:
-            str: 缓存键
-
+            str: Cache key
         Raises:
-            NotImplementedError: 子类必须实现此方法
+            NotImplementedError: Subclasses must implement this method
         """
         raise NotImplementedError(
-            f'{self.__class__.__name__} must implement get_queryset_cache_key()'
+            f"{self.__class__.__name__} must implement get_queryset_cache_key()"
         )
 
     def get_queryset_data(self):
         """
-        子类实现：返回实际数据
-
+        Subclass Implementation: Returns the actual data
         Returns:
-            QuerySet: 要缓存的 queryset
-
+            QuerySet: The queryset to be cached
         Raises:
-            NotImplementedError: 子类必须实现此方法
+            NotImplementedError: Subclasses must implement this method
         """
         raise NotImplementedError(
-            f'{self.__class__.__name__} must implement get_queryset_data()'
+            f"{self.__class__.__name__} must implement get_queryset_data()"
         )
 
     def get_queryset_from_cache(self, cache_key):
         """
-        从缓存获取 queryset，如果缓存不存在则查询并缓存
+        Retrieve the queryset from the cache; if it doesn't exist in the cache, query and cache it.
 
         Args:
-            cache_key: 缓存键
+            cache_key: Cache key
 
         Returns:
-            QuerySet: 查询结果
+            QuerySet: Query results
         """
         from djangoblog.utils import cache
 
         value = cache.get(cache_key)
         if value:
-            logger.info(f'Cache HIT: {cache_key}')
+            logger.info(f"Cache HIT: {cache_key}")
             return value
 
         queryset = self.get_queryset_data()
         cache.set(cache_key, queryset)
-        logger.info(f'Cache MISS: {cache_key}')
+        logger.info(f"Cache MISS: {cache_key}")
         return queryset
 
     def get_queryset(self):
         """
-        重写 get_queryset，使用缓存
+        Rewrite `get_queryset` to use caching.
 
         Returns:
-            QuerySet: 查询结果（从缓存或数据库）
+
+            QuerySet: Query results (from cache or database)
         """
         key = self.get_queryset_cache_key()
         return self.get_queryset_from_cache(key)
@@ -231,29 +241,33 @@ class CachedListViewMixin:
 
 class PageNumberMixin:
     """
-    Mixin: 提供页码获取功能
+    Mixin: Provides page number retrieval functionality
 
-    从 URL 参数或 GET 参数中获取当前页码
+    Retrieves the current page number from URL parameters or GET parameters.
 
-    Usage:
-        class MyView(PageNumberMixin, ListView):
-            def get_queryset_cache_key(self):
-                return f'list_{self.page_number}'
+        Usage:
+            class MyView(PageNumberMixin, ListView):
+                def get_queryset_cache_key(self):
+                    return f'list_{self.page_number}'
     """
-    page_kwarg = 'page'
+
+    page_kwarg = "page"
 
     @property
     def page_number(self):
         """
-        获取当前页码
+        Get the current page number
 
-        从 URL kwargs 或 GET 参数中获取页码，默认为 1
+        Retrieves the page number from the URL kwargs or GET parameters, defaulting to 1
 
         Returns:
-            int: 当前页码
+            int: Current page number
         """
-        page = self.kwargs.get(self.page_kwarg) or \
-               self.request.GET.get(self.page_kwarg) or 1
+        page = (
+            self.kwargs.get(self.page_kwarg)
+            or self.request.GET.get(self.page_kwarg)
+            or 1
+        )
 
         try:
             return int(page)
@@ -262,24 +276,26 @@ class PageNumberMixin:
 
 
 class ArticleListMixin(
-    OptimizedArticleQueryMixin,
-    CachedListViewMixin,
-    PageNumberMixin
+    OptimizedArticleQueryMixin, CachedListViewMixin, PageNumberMixin
 ):
     """
-    Mixin: 组合多个 Mixin，提供完整的文章列表功能
+    Mixin: Combine multiple Mixins to provide a complete article list functionality.
 
-    继承此 Mixin 的视图自动具备：
-    - 优化的文章查询
-    - 缓存支持
-    - 页码处理
+    Views inheriting from this Mixin automatically include:
 
-    Usage:
-        class MyArticleListView(ArticleListMixin, ListView):
-            def get_queryset_data(self):
-                return self.get_optimized_article_queryset().filter(status='p')
+    - Optimized article search
 
-            def get_queryset_cache_key(self):
-                return f'my_list_{self.page_number}'
+    - Caching support
+
+    - Page number handling
+
+        Usage:
+            class MyArticleListView(ArticleListMixin, ListView):
+                def get_queryset_data(self):
+                    return self.get_optimized_article_queryset().filter(status='p')
+
+                def get_queryset_cache_key(self):
+                    return f'my_list_{self.page_number}'
     """
+
     pass

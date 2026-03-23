@@ -242,7 +242,7 @@ class AuthorDetailView(OptimizedArticleQueryMixin, ArticleListView):
     使用 OptimizedArticleQueryMixin 优化文章查询
     """
 
-    page_type = "作者文章归档"
+    page_type = "Author article archive"
 
     def get_queryset_cache_key(self):
         from uuslug import slugify
@@ -264,9 +264,9 @@ class AuthorDetailView(OptimizedArticleQueryMixin, ArticleListView):
         # 添加基础SEO数据
         blog_setting = get_blog_setting()
         article_count = self.get_queryset().count()
-        kwargs["seo_title"] = f"{author_name} 的文章 | {blog_setting.site_name}"
+        kwargs["seo_title"] = f"{author_name} articles | {blog_setting.site_name}"
         kwargs["seo_description"] = (
-            f"浏览 {author_name} 发表的所有文章，共 {article_count} 篇。"
+            f"Browse {author_name}'s all published articles, totaling {article_count} articles."
         )
         kwargs["seo_keywords"] = f"{author_name}, {blog_setting.site_keywords}"
 

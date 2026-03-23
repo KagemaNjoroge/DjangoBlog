@@ -45,12 +45,12 @@ def model_post_save_callback(
     if isinstance(instance, LogEntry):
         return
 
-    # 检查是否只更新了浏览量
+    # Check if only pageviews were updated.
     is_update_views = update_fields == {"views"}
     if is_update_views:
-        return  # 浏览量更新不需要清理缓存
+        return  # No need to clear cache when pageviews are updated
 
-    # 评论相关的缓存清理
+    # Comment-related cache cleanup
     if isinstance(instance, Comment):
         if instance.is_enable:
             path = instance.article.get_absolute_url()
@@ -62,7 +62,7 @@ def model_post_save_callback(
                 path, servername=site, serverport=80, key_prefix="blogdetail"
             )
 
-            # 清理评论相关缓存
+            # Clear comment-related cache
             comment_cache_key = "article_comments_{id}".format(id=instance.article.id)
             cache.delete(comment_cache_key)
             delete_view_cache("article_comments", [str(instance.article.pk)])
@@ -71,58 +71,58 @@ def model_post_save_callback(
 
             _thread.start_new_thread(send_comment_email, (instance,))
 
-    # 文章相关的精细化缓存清理
+    # Fine-grained cache cleanup related to articles
     elif "get_full_url" in dir(instance):
         from blog.models import Article, Category, Tag
 
         if isinstance(instance, Article):
-            # 清理文章列表首页缓存
+            # Clear article list homepage cache
             cache.delete("index_1")
 
-            # 清理文章详情缓存
+            # Clear article details cache
             article_cache_key = f"article_comments_{instance.id}"
             cache.delete(article_cache_key)
 
-            # 清理分类相关缓存
+            # Clean up category-related cache
             if instance.category:
                 category_name = instance.category.name
                 cache.delete(f"category_list_{category_name}_1")
 
-            # 清理标签相关缓存
+            # Clear tag-related cache
             try:
                 for tag in instance.tags.all():
                     cache.delete(f"tag_{tag.name}_1")
             except Exception:
-                pass  # 可能在创建时tags还未关联
+                pass  # Tags may not have been associated when the application is created.
 
-            # 清理作者相关缓存
+            # Clear author-related cache
             if instance.author:
                 from uuslug import slugify
 
                 author_slug = slugify(instance.author.username)
                 cache.delete(f"author_{author_slug}_1")
 
-            # 清理归档缓存
+            # Clear archive cache
             cache.delete("archives")
 
-            # 清理侧边栏和上下文处理器缓存
+            # Clear sidebar and context processor cache
             delete_sidebar_cache()
             cache.delete("seo_processor")
 
         elif isinstance(instance, Category):
-            # 清理分类相关缓存
+            # Clean up category-related cache
             cache.delete(f"category_list_{instance.name}_1")
             delete_sidebar_cache()
             cache.delete("seo_processor")
 
         elif isinstance(instance, Tag):
-            # 清理标签相关缓存
+            # Clear tag-related cache
             cache.delete(f"tag_{instance.name}_1")
             delete_sidebar_cache()
 
-        # 其他模型的缓存清理
+        # Cache cleanup for other models
         else:
-            # 对于其他有get_full_url的模型，清理基础缓存
+            # For other models that have get_full_url, clear the basic cache.
             delete_sidebar_cache()
             cache.delete("seo_processor")
 
