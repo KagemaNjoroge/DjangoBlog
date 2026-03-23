@@ -8,26 +8,23 @@ export default () => ({
   menuOpen: false,
   windowWidth: window.innerWidth,
   isSearchOpen: false,
-  searchQuery: '',
+  searchQuery: "",
 
   // ==================== 初始化 ====================
   init() {
-    console.log('🧭 Navigation Initialized');
-
     // 监听窗口大小变化
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
       if (window.innerWidth >= 768 && this.menuOpen) {
         this.menuOpen = false;
-        document.body.style.overflow = '';
+        document.body.style.overflow = "";
       }
     });
 
     // 监听HTMX导航事件，自动关闭移动端菜单
-    document.body.addEventListener('htmx:beforeRequest', (event) => {
+    document.body.addEventListener("htmx:beforeRequest", (event) => {
       // 如果是导航链接触发的请求，并且在移动端模式，则关闭菜单
       if (this.windowWidth < 768 && this.menuOpen) {
-        console.log('🔗 HTMX navigation detected, closing mobile menu');
         this.closeMobileMenu();
       }
     });
@@ -40,18 +37,16 @@ export default () => ({
     // 移动端防止背景滚动
     if (this.windowWidth < 768) {
       if (this.menuOpen) {
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = "hidden";
       } else {
-        document.body.style.overflow = '';
+        document.body.style.overflow = "";
       }
     }
-
-    console.log('📱 Mobile menu:', this.menuOpen ? 'opened' : 'closed');
   },
 
   closeMobileMenu() {
     this.menuOpen = false;
-    document.body.style.overflow = '';
+    document.body.style.overflow = "";
   },
 
   // ==================== 搜索功能 ====================
@@ -64,8 +59,6 @@ export default () => ({
         this.$refs.searchInput?.focus();
       });
     }
-
-    console.log('🔍 Search:', this.isSearchOpen ? 'opened' : 'closed');
   },
 
   submitSearch() {
@@ -77,12 +70,10 @@ export default () => ({
   // ==================== 主题切换（与dark_mode插件配合） ====================
   toggleTheme() {
     const html = document.documentElement;
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const currentTheme = html.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
 
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-
-    console.log('🌓 Theme switched to:', newTheme);
+    html.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
   },
 });

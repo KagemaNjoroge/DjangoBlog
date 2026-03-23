@@ -7,7 +7,7 @@ export default () => ({
   // ==================== 状态管理 ====================
   comments: [],
   replyingTo: null,
-  replyContent: '',
+  replyContent: "",
   isLoading: false,
   error: null,
   articleId: null,
@@ -20,8 +20,6 @@ export default () => ({
     if (this.articleId) {
       this.loadComments();
     }
-
-    console.log('💬 Comment System Initialized');
   },
 
   // ==================== 加载评论 ====================
@@ -34,12 +32,9 @@ export default () => ({
       // const response = await fetch(`/api/comments/?article_id=${this.articleId}`);
       // if (!response.ok) throw new Error('Failed to load comments');
       // this.comments = await response.json();
-
       // 目前评论由Django模板渲染，这里只是占位
-      console.log('📝 Comments loaded from Django template');
     } catch (err) {
       this.error = err.message;
-      console.error('Error loading comments:', err);
     } finally {
       this.isLoading = false;
     }
@@ -48,7 +43,7 @@ export default () => ({
   // ==================== 回复评论 ====================
   startReply(commentId) {
     this.replyingTo = commentId;
-    this.replyContent = '';
+    this.replyContent = "";
 
     // 等待DOM更新后聚焦到textarea
     this.$nextTick(() => {
@@ -57,33 +52,29 @@ export default () => ({
         textarea.focus();
       }
     });
-
-    console.log('💬 Replying to comment:', commentId);
   },
 
   cancelReply() {
     this.replyingTo = null;
-    this.replyContent = '';
-    console.log('❌ Reply cancelled');
+    this.replyContent = "";
   },
 
   // ==================== 提交回复 ====================
   async submitReply(commentId) {
     if (!this.replyContent.trim()) {
-      alert('回复内容不能为空');
+      alert("The reply content cannot be empty.");
       return;
     }
 
     // 使用HTMX提交表单，不会导致整页刷新
-    const form = document.getElementById('commentform');
+    const form = document.getElementById("commentform");
     if (!form) {
-      console.error('❌ Comment form not found');
-      alert('评论表单未找到，请刷新页面重试');
+      alert("Comment form not found, please refresh the page and try again.");
       return;
     }
 
     // 设置父评论ID
-    const parentField = document.getElementById('id_parent_comment_id');
+    const parentField = document.getElementById("id_parent_comment_id");
     if (parentField) {
       parentField.value = commentId;
     }
@@ -95,14 +86,14 @@ export default () => ({
     }
 
     // 触发HTMX提交（表单上已有hx-post属性）
-    console.log('💬 Submitting reply via HTMX...');
-    window.htmx.trigger(form, 'submit');
+
+    window.htmx.trigger(form, "submit");
   },
 
   // ==================== 发布新评论 ====================
   async submitComment() {
     if (!this.replyContent.trim()) {
-      alert('评论内容不能为空');
+      alert("Comment content cannot be empty.");
       return;
     }
 
@@ -112,11 +103,11 @@ export default () => ({
     try {
       const csrfToken = this.getCsrfToken();
 
-      const response = await fetch('/api/comments/', {
-        method: 'POST',
+      const response = await fetch("/api/comments/", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken,
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
         },
         body: JSON.stringify({
           article_id: this.articleId,
@@ -125,24 +116,23 @@ export default () => ({
       });
 
       if (!response.ok) {
-        throw new Error('提交失败');
+        throw new Error("Failed to submit comment");
       }
 
       const data = await response.json();
-      console.log('✅ Comment submitted:', data);
 
       // 重新加载评论列表
       await this.loadComments();
 
       // 清空表单
-      this.replyContent = '';
+      this.replyContent = "";
 
       // 提示成功
-      this.showNotification('评论成功！');
+      this.showNotification("Comment successful!");
     } catch (err) {
       this.error = err.message;
-      console.error('Error submitting comment:', err);
-      alert('提交失败：' + err.message);
+
+      alert("Failed to submit comment:" + err.message);
     } finally {
       this.isLoading = false;
     }
@@ -151,13 +141,13 @@ export default () => ({
   // ==================== 工具函数 ====================
   getCsrfToken() {
     // 从cookie中获取CSRF token
-    const name = 'csrftoken';
+    const name = "csrftoken";
     let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
       for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        if (cookie.substring(0, name.length + 1) === name + "=") {
           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
           break;
         }
@@ -168,13 +158,18 @@ export default () => ({
 
   showNotification(message) {
     // 简单的通知实现，可以后续优化
-    const notification = document.createElement('div');
-    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
+    const notification = document.createElement("div");
+    notification.className =
+      "fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in";
     notification.textContent = message;
     document.body.appendChild(notification);
 
     setTimeout(() => {
-      notification.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+      notification.classList.add(
+        "opacity-0",
+        "transition-opacity",
+        "duration-300",
+      );
       setTimeout(() => notification.remove(), 300);
     }, 3000);
   },

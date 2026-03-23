@@ -15,14 +15,12 @@ export default () => ({
 
     // 监听滚动事件（使用防抖）
     this.handleScroll = this.debounce(this.checkScroll.bind(this), 100);
-    window.addEventListener('scroll', this.handleScroll);
-
-    console.log('🚀 Back to Top Initialized');
+    window.addEventListener("scroll", this.handleScroll);
   },
 
   // ==================== 销毁 ====================
   destroy() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener("scroll", this.handleScroll);
   },
 
   // ==================== 检查滚动位置 ====================
@@ -40,19 +38,17 @@ export default () => ({
     // 使用现代API平滑滚动
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
 
     // 添加火箭动画效果
     const rocket = this.$el;
-    rocket.classList.add('move');
+    rocket.classList.add("move");
 
     setTimeout(() => {
-      rocket.classList.remove('move');
+      rocket.classList.remove("move");
       this.isAnimating = false;
     }, 800);
-
-    console.log('🚀 Scrolling to top');
   },
 
   // ==================== 工具函数 ====================

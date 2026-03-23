@@ -53,14 +53,13 @@ htmx.config.defaultSettleDelay = 20;
 document.body.addEventListener("htmx:beforeSwap", function (evt) {
   // 对于 boost 的请求，确保正确提取内容
   if (evt.detail.boosted && evt.detail.target.id === "main") {
-    console.log("HTMX boost navigation:", evt.detail.pathInfo.requestPath);
+    // console.log("HTMX boost navigation:", evt.detail.pathInfo.requestPath);
   }
 });
 
 // HTMX 加载完成后重新初始化 Alpine 组件
 document.body.addEventListener("htmx:afterSwap", function (evt) {
   // Alpine 会自动检测新的 DOM 元素并初始化
-  console.log("Content swapped, Alpine auto-initializing new components");
 
   // 滚动到顶部（可选）
   if (evt.detail.boosted) {
@@ -98,5 +97,3 @@ document.body.addEventListener("htmx:beforeRequest", () => {
 document.body.addEventListener("htmx:afterRequest", () => {
   NProgress.done();
 });
-
-console.log("✨ DjangoBlog Frontend Loaded (Alpine.js + HTMX + Tailwind CSS)");
