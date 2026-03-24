@@ -44,7 +44,7 @@ DjangoBlog is a high-performance blog platform built with Python 3.10+ and Djang
 ## 🛠️ Tech Stack
 
 - **Backend**: Python 3.10+, Django 5.2
-- **Database**: MySQL, SQLite (configurable)
+- **Database**: MySQL, SQLite, Postgresql (configurable)
 - **Cache**: Redis, LocalMem (configurable)
 - **Frontend**: Alpine.js 3.13, Tailwind CSS 3.4, HTMX 2.0, Vite 5.4
 - **Search**: Whoosh, Elasticsearch (configurable)
