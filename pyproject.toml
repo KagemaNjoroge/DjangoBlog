@@ -26,7 +26,7 @@ dependencies = [
     "jsonpickle==4.1.1",
     "markdown==3.10.1",
     "markupsafe==3.0.3",
-    "pillow==12.1.0",
+    "pillow==12.1.1",
     "prettytable==3.17.0",
     "propcache==0.4.1",
     "psycopg2>=2.9.11",
