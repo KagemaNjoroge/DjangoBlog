@@ -1,18 +1,18 @@
 /**
- * 导航栏组件
- * 处理移动端菜单、搜索等交互
+* Navigation bar component
+* Handles mobile menus, search, and other interactions
  */
 
 export default () => ({
-  // ==================== 状态 ====================
+  // ==================== state ====================
   menuOpen: false,
   windowWidth: window.innerWidth,
   isSearchOpen: false,
   searchQuery: "",
 
-  // ==================== 初始化 ====================
+  // ==================== initialization ====================
   init() {
-    // 监听窗口大小变化
+    // Listen for changes in window size
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
       if (window.innerWidth >= 768 && this.menuOpen) {
@@ -21,20 +21,20 @@ export default () => ({
       }
     });
 
-    // 监听HTMX导航事件，自动关闭移动端菜单
+    // Listen for HMX navigation events and automatically close the mobile menu.
     document.body.addEventListener("htmx:beforeRequest", (event) => {
-      // 如果是导航链接触发的请求，并且在移动端模式，则关闭菜单
+      // If the request is triggered by a navigation link and the device is in mobile mode, then close the menu.
       if (this.windowWidth < 768 && this.menuOpen) {
         this.closeMobileMenu();
       }
     });
   },
 
-  // ==================== 移动端菜单 ====================
+  // ==================== Mobile menu ====================
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
 
-    // 移动端防止背景滚动
+    // Preventing background scrolling on mobile devices
     if (this.windowWidth < 768) {
       if (this.menuOpen) {
         document.body.style.overflow = "hidden";
@@ -49,12 +49,12 @@ export default () => ({
     document.body.style.overflow = "";
   },
 
-  // ==================== 搜索功能 ====================
+  // ==================== Search function ====================
   toggleSearch() {
     this.isSearchOpen = !this.isSearchOpen;
 
     if (this.isSearchOpen) {
-      // 聚焦到搜索框
+      // Focus on the search box
       this.$nextTick(() => {
         this.$refs.searchInput?.focus();
       });
@@ -67,7 +67,7 @@ export default () => ({
     }
   },
 
-  // ==================== 主题切换（与dark_mode插件配合） ====================
+  // ==================== Theme switching (in conjunction with the dark_mode plugin) ====================
   toggleTheme() {
     const html = document.documentElement;
     const currentTheme = html.getAttribute("data-theme");

@@ -1,35 +1,40 @@
 /**
- * Dark Mode 核心功能
- * 实现主题切换、持久化存储和系统主题跟随
- */
+
+* Dark Mode core functionality
+
+* Enables theme switching, persistent storage, and system theme following
+
+*/
 
 const STORAGE_KEY = "dark-mode-enabled";
 const THEME_ATTR = "data-theme";
 const ENABLE_SYSTEM = true;
 
 /**
- * 获取首选主题
- */
+
+* Get preferred theme
+
+*/
 function getPreferredTheme() {
-  // 1. 优先使用用户保存的偏好
+// 1. Prioritize user-saved preferences
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved !== null) {
     return saved === "dark" ? "dark" : "light";
   }
 
-  // 2. 如果启用系统偏好跟随，检测系统设置
+ // 2. If System Preferences Follow is enabled, check system settings.
   if (ENABLE_SYSTEM && window.matchMedia) {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       return "dark";
     }
   }
 
-  // 3. 默认主题
+  // 3. default theme
   return "light";
 }
 
 /**
- * 应用主题
+ * Apply theme
  */
 function applyTheme(theme) {
   if (theme === "dark") {
@@ -42,25 +47,25 @@ function applyTheme(theme) {
 }
 
 /**
- * 获取当前主题
+ * Get the current topic
  */
 function getCurrentTheme() {
   return document.documentElement.getAttribute(THEME_ATTR) || "light";
 }
 
 /**
- * 设置主题
+ * Set theme
  */
 function setTheme(theme) {
   const validTheme = theme === "dark" ? "dark" : "light";
 
-  // 应用主题
+  // Apply theme
   applyTheme(validTheme);
 
-  // 保存到localStorage
+  // Save to localStorage
   localStorage.setItem(STORAGE_KEY, validTheme);
 
-  // 触发自定义事件
+  // Trigger custom event
   const event = new CustomEvent("themeChanged", {
     detail: { theme: validTheme },
   });
@@ -70,7 +75,7 @@ function setTheme(theme) {
 }
 
 /**
- * 切换主题
+ * switch theme
  */
 function toggleTheme() {
   const current = getCurrentTheme();
@@ -79,16 +84,19 @@ function toggleTheme() {
 }
 
 /**
- * 初始化（防闪烁）
- * 必须在DOM渲染前执行
- */
+
+* Initialization (anti-flicker)
+
+* Must be executed before DOM rendering
+
+*/
 function initTheme() {
   const theme = getPreferredTheme();
   applyTheme(theme);
 }
 
 /**
- * 设置键盘快捷键
+ * Set keyboard shortcuts
  */
 function setupKeyboardShortcut() {
   document.addEventListener("keydown", function (e) {
@@ -100,7 +108,7 @@ function setupKeyboardShortcut() {
 }
 
 /**
- * 监听系统主题变化
+ * Monitoring system topic changes
  */
 function setupSystemThemeListener() {
   if (!ENABLE_SYSTEM || !window.matchMedia) return;
@@ -108,7 +116,7 @@ function setupSystemThemeListener() {
   const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
   const listener = function (e) {
-    // 只有在用户未手动设置时才跟随系统
+    // Follows the system only if the user does not manually set it.
     if (localStorage.getItem(STORAGE_KEY) === null) {
       setTheme(e.matches ? "dark" : "light");
     }
@@ -122,24 +130,22 @@ function setupSystemThemeListener() {
 }
 
 /**
- * 初始化Dark Mode
+ * Initialize Dark Mode
  */
 export function initDarkMode() {
-  // 设置全局API
+  // Set global API
   window.DarkMode = {
     getCurrentTheme,
     setTheme,
     toggle: toggleTheme,
   };
 
-  // 设置键盘快捷键
+  // Set keyboard shortcuts
   setupKeyboardShortcut();
 
-  // 监听系统主题变化
+  // Monitoring system topic changes
   setupSystemThemeListener();
-
-  console.log("🌗 Dark Mode initialized");
 }
 
-// 立即执行防闪烁初始化（在模块加载时）
+// Perform anti-flicker initialization immediately (when the module loads).
 initTheme();

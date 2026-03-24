@@ -1,38 +1,38 @@
 /**
- * Emoji Reaction Picker 组件
- * 为评论添加 GitHub 风格的 emoji 反应功能
+* Emoji Reaction Picker Component
+* Adds GitHub-style emoji reactions to comments.
  */
 
 export default (commentId) => {
   return {
-    // ==================== 状态管理 ====================
+    // ==================== Status management ====================
     reactions: {},
     showPicker: false,
     isLoading: false,
 
-    // ==================== 初始化 ====================
+    // ==================== initialization ====================
     init() {
-      // 优先从 data 属性读取初始数据（SSR）
+      // Initial data (SSR) is read first from the data attribute.
       this.loadFromDataAttribute();
     },
 
-    // ==================== 从 data 属性加载（SSR 数据）====================
+    // ==================== Load (SSR data) from the data attribute====================
     loadFromDataAttribute() {
       try {
         const dataAttr = this.$el.dataset.reactions;
         if (dataAttr) {
           this.reactions = JSON.parse(dataAttr);
         } else {
-          // 如果没有 SSR 数据，降级到 API 加载
+          // If SSR data is unavailable, degrade to API loading.
           this.loadFromAPI();
         }
       } catch (error) {
-        // 解析失败，降级到 API 加载
+        // Parsing failed, downgraded to API loading.
         this.loadFromAPI();
       }
     },
 
-    // ==================== 从 API 加载（降级方案）====================
+    // ==================== Loading from API (fallback solution)====================
     async loadFromAPI() {
       try {
         this.isLoading = true;
@@ -53,12 +53,12 @@ export default (commentId) => {
       }
     },
 
-    // ==================== 格式化用户列表 ====================
+    // ==================== Format user list ====================
     /**
-     * 格式化用户列表文本，用于 tooltip 显示
-     * @param {Array} users - 用户名数组
-     * @param {number} totalCount - 总点赞数
-     * @returns {string} 格式化后的文本
+     * Format the user list text for tooltip display.
+     * @param {Array} users - Username array
+     * @param {number} totalCount - Total number of likes
+     * @returns {string} Formatted text
      */
     formatUsersText(users, totalCount) {
       if (!users || users.length === 0) {
@@ -66,10 +66,10 @@ export default (commentId) => {
       }
 
       if (users.length === totalCount) {
-        // 显示所有用户
+        // Show all users
         return users.join(", ");
       } else {
-        // 显示前几个用户，并标注还有多少人
+        // Display the top few users and indicate how many people are left.
         const displayUsers = users.slice(0, 5).join(", ");
         const remaining = totalCount - users.length;
         if (remaining > 0) {
@@ -79,20 +79,20 @@ export default (commentId) => {
       }
     },
 
-    // ==================== 检查登录状态 ====================
+    // ==================== Check login status ====================
     /**
-     * 检查用户是否已登录
+     * Check if the user is logged in
      * @returns {boolean}
      */
     isAuthenticated() {
       return document.body.dataset.authenticated === "true";
     },
 
-    // ==================== 显示登录提示 ====================
+    // ==================== Show login prompt ====================
     showLoginPrompt() {
       const loginUrl = `/login/?next=${encodeURIComponent(window.location.pathname)}`;
 
-      // 创建美观的提示框
+      // Create attractive tooltips
       const modal = document.createElement("div");
       modal.className =
         "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 animate-fade-in";
@@ -120,7 +120,7 @@ export default (commentId) => {
 
       document.body.appendChild(modal);
 
-      // 绑定事件
+      // Binding events
       const cancelBtn = modal.querySelector("#modal-cancel");
       const confirmBtn = modal.querySelector("#modal-confirm");
 
@@ -133,7 +133,7 @@ export default (commentId) => {
         window.location.href = loginUrl;
       });
 
-      // 点击背景关闭
+      // Click on the background to close
       modal.addEventListener("click", (e) => {
         if (e.target === modal) {
           modal.classList.add("animate-fade-out");
@@ -142,20 +142,20 @@ export default (commentId) => {
       });
     },
 
-    // ==================== 切换 Reaction ====================
+    // ==================== Switch Reaction ====================
     /**
-     * 切换 reaction（添加或删除）
+     * Switch Reaction (Add or delete)
      * @param {string} emoji - emoji 字符
      */
     async toggleReaction(emoji) {
-      // 检查登录状态
+      // Check login status
       if (!this.isAuthenticated()) {
         this.showLoginPrompt();
         return;
       }
 
       try {
-        // 获取 CSRF token
+        // Get CSRF token
         const csrfToken = this.getCsrfToken();
 
         if (!csrfToken) {
@@ -166,7 +166,7 @@ export default (commentId) => {
           return;
         }
 
-        // 发送请求
+        // Send request
         const formData = new FormData();
         formData.append("reaction_type", emoji);
         formData.append("csrfmiddlewaretoken", csrfToken);
@@ -180,7 +180,7 @@ export default (commentId) => {
         });
 
         if (!response.ok) {
-          // 处理 401 未授权错误
+           // Handling 401 Unauthorized Error
           if (response.status === 401) {
             this.showNotification(
               "Your login has expired. Please log in again.",
@@ -197,7 +197,7 @@ export default (commentId) => {
         const data = await response.json();
 
         if (data.success) {
-          // 更新本地 reactions 数据
+          // Update local reactions data
           this.reactions = data.reactions;
           this.showPicker = false;
         } else {
@@ -208,11 +208,11 @@ export default (commentId) => {
       }
     },
 
-    // ==================== 显示通知 ====================
+    // ==================== Show notification ====================
     /**
-     * 显示美观的通知消息
-     * @param {string} message - 消息内容
-     * @param {string} type - 消息类型：success, error, info
+     * Displaying aesthetically pleasing notification messages
+     * @param {string} message - Message content
+     * @param {string} type - Message type：success, error, info
      */
     showNotification(message, type = "info") {
       const colors = {
@@ -246,9 +246,9 @@ export default (commentId) => {
       }, 3000);
     },
 
-    // ==================== 工具函数 ====================
+    // ==================== Utility function ====================
     /**
-     * 从 cookie 中获取 CSRF token
+     * Retrieve CSRF token from cookie
      * @returns {string|null} CSRF token
      */
     getCsrfToken() {

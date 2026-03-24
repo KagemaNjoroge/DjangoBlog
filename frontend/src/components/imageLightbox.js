@@ -1,6 +1,6 @@
 /**
- * 图片灯箱组件
- * 点击文章内容中的图片可以查看大图
+* Image Lightbox Component
+* Click on the image in the article to view a larger version.
  */
 export default function imageLightbox() {
   return {
@@ -9,18 +9,18 @@ export default function imageLightbox() {
     currentAlt: "",
 
     init() {
-      // 为所有文章内容中的图片添加点击事件
+      // Add click events to all images in the article content
       this.$nextTick(() => {
         const images = document.querySelectorAll(".entry-content img");
         images.forEach((img) => {
-          // 排除badge图片和小图片（不需要查看大图）
+          //Exclude badge images and small images (no need to view large images).
           const isBadge =
             img.src.includes("badge.svg") ||
             img.src.includes("shields.io") ||
             img.src.includes("/badge/") ||
             img.alt.toLowerCase().includes("badge");
 
-          // 排除小于200px的图片
+          // Exclude images smaller than 200px
           const isSmallImage =
             img.naturalWidth < 200 || img.naturalHeight < 200;
 

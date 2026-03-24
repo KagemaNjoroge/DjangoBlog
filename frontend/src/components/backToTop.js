@@ -1,47 +1,50 @@
 /**
- * 回到顶部组件
- * 替代原有的jQuery实现
- */
+
+* Back to top component
+
+* Replaces the original jQuery implementation
+
+*/
 
 export default () => ({
-  // ==================== 状态 ====================
+  // ==================== state ====================
   isVisible: false,
   isAnimating: false,
 
-  // ==================== 初始化 ====================
+  // ==================== initialization ====================
   init() {
-    // 初始检查滚动位置
+    // Initial check scroll position
     this.checkScroll();
 
-    // 监听滚动事件（使用防抖）
+    // Listen for scroll events (using debouncing)
     this.handleScroll = this.debounce(this.checkScroll.bind(this), 100);
     window.addEventListener("scroll", this.handleScroll);
   },
 
-  // ==================== 销毁 ====================
+  // ==================== destroy ====================
   destroy() {
     window.removeEventListener("scroll", this.handleScroll);
   },
 
-  // ==================== 检查滚动位置 ====================
+  // ==================== Check scroll position ====================
   checkScroll() {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     this.isVisible = scrollTop > 200;
   },
 
-  // ==================== 滚动到顶部 ====================
+  // ==================== scroll to top ====================
   scrollToTop() {
     if (this.isAnimating) return;
 
     this.isAnimating = true;
 
-    // 使用现代API平滑滚动
+    // Smooth scrolling using modern APIs
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
 
-    // 添加火箭动画效果
+    // Add rocket animation effects
     const rocket = this.$el;
     rocket.classList.add("move");
 
@@ -51,7 +54,7 @@ export default () => ({
     }, 800);
   },
 
-  // ==================== 工具函数 ====================
+  // ==================== Utility function ====================
   debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {

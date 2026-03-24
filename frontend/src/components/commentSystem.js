@@ -1,10 +1,10 @@
 /**
- * 评论系统组件
- * 使用Alpine.js重构，替代原有的jQuery实现
+* Comment system component
+* Refactored using Alpine.js, replacing the original jQuery implementation
  */
 
 export default () => ({
-  // ==================== 状态管理 ====================
+  // ==================== Status management ====================
   comments: [],
   replyingTo: null,
   replyContent: "",
@@ -12,9 +12,9 @@ export default () => ({
   error: null,
   articleId: null,
 
-  // ==================== 初始化 ====================
+  // ==================== initialization ====================
   init() {
-    // 从DOM中获取文章ID
+    // Retrieve Article ID from DOM
     this.articleId = this.$el.dataset.articleId;
 
     if (this.articleId) {
@@ -22,17 +22,17 @@ export default () => ({
     }
   },
 
-  // ==================== 加载评论 ====================
+  // ==================== Loading comments ====================
   async loadComments() {
     this.isLoading = true;
     this.error = null;
 
     try {
-      // 如果需要通过API加载，取消注释以下代码
+      // If you need to load comments via API, uncomment the following code:
       // const response = await fetch(`/api/comments/?article_id=${this.articleId}`);
       // if (!response.ok) throw new Error('Failed to load comments');
       // this.comments = await response.json();
-      // 目前评论由Django模板渲染，这里只是占位
+      // Currently, comments are rendered using Django templates; this is just a placeholder.
     } catch (err) {
       this.error = err.message;
     } finally {
@@ -40,12 +40,12 @@ export default () => ({
     }
   },
 
-  // ==================== 回复评论 ====================
+  // ==================== Reply to comment ====================
   startReply(commentId) {
     this.replyingTo = commentId;
     this.replyContent = "";
 
-    // 等待DOM更新后聚焦到textarea
+    //Focus on the textarea after the DOM is updated.
     this.$nextTick(() => {
       const textarea = document.querySelector(`#reply-textarea-${commentId}`);
       if (textarea) {
@@ -59,38 +59,38 @@ export default () => ({
     this.replyContent = "";
   },
 
-  // ==================== 提交回复 ====================
+  // ==================== Submit reply ====================
   async submitReply(commentId) {
     if (!this.replyContent.trim()) {
       alert("The reply content cannot be empty.");
       return;
     }
 
-    // 使用HTMX提交表单，不会导致整页刷新
+    // Submitting a form using HTMX will not cause a full page refresh.
     const form = document.getElementById("commentform");
     if (!form) {
       alert("Comment form not found, please refresh the page and try again.");
       return;
     }
 
-    // 设置父评论ID
+    // Set parent comment ID
     const parentField = document.getElementById("id_parent_comment_id");
     if (parentField) {
       parentField.value = commentId;
     }
 
-    // 设置评论内容
+    // Set comment content
     const bodyField = document.querySelector('[name="body"]');
     if (bodyField) {
       bodyField.value = this.replyContent;
     }
 
-    // 触发HTMX提交（表单上已有hx-post属性）
+    // Trigger HTMX submission (the form already has the hx-post attribute)
 
     window.htmx.trigger(form, "submit");
   },
 
-  // ==================== 发布新评论 ====================
+  // ==================== Post a new comment ====================
   async submitComment() {
     if (!this.replyContent.trim()) {
       alert("Comment content cannot be empty.");
@@ -121,13 +121,13 @@ export default () => ({
 
       const data = await response.json();
 
-      // 重新加载评论列表
+      // Reload the comment list
       await this.loadComments();
 
-      // 清空表单
+      // Clear form
       this.replyContent = "";
 
-      // 提示成功
+      // Prompt success
       this.showNotification("Comment successful!");
     } catch (err) {
       this.error = err.message;
@@ -140,7 +140,7 @@ export default () => ({
 
   // ==================== 工具函数 ====================
   getCsrfToken() {
-    // 从cookie中获取CSRF token
+    //Retrieve CSRF token from cookie
     const name = "csrftoken";
     let cookieValue = null;
     if (document.cookie && document.cookie !== "") {
@@ -157,7 +157,7 @@ export default () => ({
   },
 
   showNotification(message) {
-    // 简单的通知实现，可以后续优化
+    // The notification implementation is simple and can be optimized later.
     const notification = document.createElement("div");
     notification.className =
       "fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in";
@@ -174,7 +174,7 @@ export default () => ({
     }, 3000);
   },
 
-  // ==================== 判断方法 ====================
+  // ==================== Judgment method ====================
   isReplying(commentId) {
     return this.replyingTo === commentId;
   },
