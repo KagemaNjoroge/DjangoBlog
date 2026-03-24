@@ -3,12 +3,12 @@ let wait = 60;
 function time(o) {
     if (wait == 0) {
         o.removeAttribute("disabled");
-        o.value = "获取验证码";
+        o.value = "Get verification code";
         wait = 60
         return false
     } else {
         o.setAttribute("disabled", true);
-        o.value = "重新发送(" + wait + ")";
+        o.value = "Resend(" + wait + ")";
         wait--;
         setTimeout(function () {
                 time(o)
@@ -40,7 +40,7 @@ document.getElementById("btn").onclick = function () {
                 time(ts)
             },
             error: function (e) {
-                alert("发送失败,请重试")
+                alert("An error occurred while sending the verification code. Please try again later.")
             }
         }
     );

@@ -16,11 +16,11 @@
     <meta name="robots" content="index, follow" />
     {% head_meta %}
     {% block header %}
-    <!-- SEO插件会自动生成title、description、keywords等标签 -->
+    <!-- The SEO plugin automatically generates tags such as title, description, and keywords -->
     {% endblock %}
     <link rel="profile" href="http://gmpg.org/xfn/11" />
 
-    <!-- 防闪烁脚本：必须在CSS加载前立即执行 -->
+    <!-- Anti-flicker script: must be executed immediately before CSS loads -->
     <script>
         (function () {
             const STORAGE_KEY = 'dark-mode-enabled';
@@ -47,28 +47,28 @@
                 }
             }
 
-            // 立即应用主题到html元素（防止闪烁）
+            // Apply the theme to HTML elements immediately (to prevent flickering).
             const theme = getPreferredTheme();
             applyTheme(theme);
 
-            // 存储主题供后续使用
+            // Store the topic for later use.
             window.__THEME__ = theme;
         })();
     </script>
 
-    <!-- 资源提示优化 -->
-    <!-- 仅保留真正需要的 dns-prefetch，MathJax 由智能加载器按需加载 -->
+    <!-- Resource suggestion optimization -->
+    <!-- Only keep the truly necessary dns-prefetch; MathJax is loaded on demand by the smart loader -->
     <link rel="dns-prefetch" href="//cdn.mathjax.org" />
 
-    <!-- RSS和图标 -->
+    <!-- RSS and icons -->
     <link rel="alternate" type="application/rss+xml" title="{{ SITE_NAME }} &raquo; Feed" href="/feed" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
 
-    <!-- 关键CSS：防止深色模式闪烁 + 首屏优化 -->
+    <!-- Key CSS: Prevent Dark Mode Flickering + First Screen Optimization -->
     <style>
-        /* 立即应用深色模式的关键样式 */
+        /* Apply key styles for dark mode immediately */
         :root {
             --color-primary-500: 102, 126, 234;
             --color-primary-600: 79, 70, 229;
@@ -86,7 +86,7 @@
             color: #1e293b !important;
         }
 
-        /* 首屏关键布局样式 - 防止布局抖动 */
+        /* First screen key layout style - prevent layout jitter */
         body {
             margin: 0;
             padding: 0;
@@ -109,7 +109,7 @@
             flex: 1;
         }
 
-        /* 骨架屏样式 - 提升感知性能 */
+        /* Skeleton screen style - Improves perceived performance */
         .skeleton {
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
@@ -126,30 +126,29 @@
             }
         }
 
-        /* Alpine.js x-cloak 防止闪烁 */
+        /* Alpine.js x-cloak prevents flickering */
         [x-cloak] {
             display: none !important;
         }
     </style>
 
-    <!-- 字体优化加载：使用媒体查询延迟非关键字体 -->
+    <!-- Font loading optimization: Use media queries to delay non-keyword fonts -->
     <link rel="stylesheet" href="{% static 'blog/fonts/open-sans.css' %}" media="print"
         onload="this.media='all'; this.onload=null;">
     <noscript>
         <link rel="stylesheet" href="{% static 'blog/fonts/open-sans.css' %}">
     </noscript>
-
-    <!-- 代码高亮样式（Pygments） - 异步加载，仅在有代码块时需要 -->
+    <!-- Code highlighting style (Pygments) - Loaded asynchronously, only needed when there is a code block -->
     <link rel="stylesheet" href="{% static 'pygments/default.css' %}" media="print"
         onload="this.media='all'; this.onload=null;">
     <noscript>
         <link rel="stylesheet" href="{% static 'pygments/default.css' %}">
     </noscript>
 
-    <!-- 新前端：Tailwind CSS + Alpine.js - 完整样式系统（通过JS加载） -->
+    <!-- New front-end: Tailwind CSS + Alpine.js - Complete style system (loaded via JS) -->
     {% vite_js 'src/main.js' %}
 
-    <!-- 插件CSS文件 -->
+    <!-- Plugin CSS file -->
     {% compress css %}
     {% block compress_css %}
     {% endblock %}
@@ -174,9 +173,9 @@
                     <h2 class="site-description">{{ SITE_DESCRIPTION }}</h2>
                 </hgroup>
 
-                <!-- 快捷入口图标 -->
+                <!-- Shortcut icon -->
                 <div class="header-actions absolute right-4 top-1/2 -translate-y-1/2">
-                    <!-- 搜索按钮 -->
+                    <!-- Search button -->
                     <button type="button" class="header-icon-btn search-toggle"
                         @click="searchOpen = !searchOpen; if (searchOpen) { $nextTick(() => $refs.searchInput.focus()) }"
                         title="search">
@@ -186,7 +185,7 @@
                         </svg>
                     </button>
 
-                    <!-- RSS订阅 -->
+                    <!-- RSS subscription -->
                     <a href="/feed" class="header-icon-btn no-external-icon" title="RSS Subscription" target="_blank">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -194,7 +193,7 @@
                         </svg>
                     </a>
 
-                    <!-- GitHub链接 -->
+                    <!-- GitHub link -->
                     <a href="https://github.com/kagemanjoroge" class="header-icon-btn no-external-icon" title="GitHub"
                         target="_blank">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -203,7 +202,7 @@
                         </svg>
                     </a>
 
-                    <!-- 搜索框下拉 -->
+                    <!-- Search box dropdown -->
                     <div class="header-search" x-show="searchOpen" @click.away="searchOpen = false"
                         x-transition:enter="transition ease-out duration-200"
                         x-transition:enter-start="opacity-0 transform -translate-y-2"
@@ -228,8 +227,8 @@
             {% load i18n %}
             {% include 'share_layout/nav.html' %}
         </header><!-- #masthead -->
-        <!-- 容器宽度从max-w-7xl(1280px)增加到max-w-screen-2xl(1536px)，更好地利用屏幕空间 -->
-        <!-- 移动端使用更小的padding(px-2),在小屏幕上提供更宽的内容区域 -->
+        <!-- Container width increased from max-w-7xl (1280px) to max-w-screen-2xl (1536px) for better screen space utilization -->
+        <!-- Mobile devices use smaller padding (px-2) to provide a wider content area on smaller screens -->
         <div id="main" class="wrapper max-w-screen-2xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 w-full" hx-boost="true"
             hx-target="#main" hx-select="#main" hx-swap="innerHTML" hx-push-url="true">
 
@@ -245,31 +244,31 @@
         {% include 'share_layout/footer.html' %}
     </div><!-- #page -->
 
-    <!-- JS已在head中加载，无需重复 -->
+    <!-- The JS file is already loaded in the head, no need to repeat it -->
 
-    <!-- 插件JS文件 -->
+    <!-- Plugin JS file -->
     {% compress js %}
     {% block compress_js %}
     {% endblock %}
     {% plugin_compressed_js %}
     {% endcompress %}
 
-    <!-- MathJax智能加载器 - 延迟加载,不阻塞渲染 -->
+    <!-- MathJax Smart Loader - Lazy loading, non-blocking rendering -->
     <script src="{% static 'blog/js/mathjax-loader.js' %}" defer></script>
 
     {% block footer %}
     {% endblock %}
 
-    <!-- 深色模式切换按钮 -->
+    <!-- Dark mode toggle button -->
     <div class="dark-mode-toggle-fixed" style="pointer-events: auto;">
         <button type="button" id="dark-mode-toggle-btn" class="dark-mode-toggle-btn" style="pointer-events: auto;"
-            aria-label="切换主题" title="切换黑夜模式" @click="window.DarkMode && window.DarkMode.toggle()">
+            aria-label="switch theme" title="Switch to night mode" @click="window.DarkMode && window.DarkMode.toggle()">
             <span class="icon-light">☀️</span>
             <span class="icon-dark">🌙</span>
         </button>
     </div>
 
-    <!-- 回到顶部按钮 - Alpine.js组件 -->
+    <!-- Back to Top Button - Alpine.js Component -->
     <div x-data="backToTop()" x-init="init()" @click="scrollToTop()" id="rocket" x-show="isVisible"
         x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-90"
         x-transition:enter-end="opacity-100 scale-100" x-cloak>
@@ -280,9 +279,9 @@
         </svg>
     </div>
 
-    <!-- 图片灯箱 - Alpine.js组件 -->
+    <!-- Image Lightbox - Alpine.js Component -->
     <div x-data="imageLightbox()" x-init="init()" @keydown.escape.window="closeLightbox()" x-cloak>
-        <!-- 遮罩层 -->
+        <!-- Mask layer -->
         <div x-show="showLightbox" @click="closeLightbox()"
             class="fixed inset-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
@@ -290,7 +289,7 @@
             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
         </div>
 
-        <!-- 图片容器 -->
+        <!-- Image container -->
         <div x-show="showLightbox" class="fixed inset-0 z-50 flex items-center justify-center p-4"
             x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
@@ -299,13 +298,13 @@
                 <img :src="currentImage" :alt="currentAlt"
                     class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl">
 
-                <!-- 图片说明 -->
+                <!-- Image description -->
                 <div x-show="currentAlt"
                     class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white text-center py-3 px-4 rounded-b-lg">
                     <p class="text-sm" x-text="currentAlt"></p>
                 </div>
 
-                <!-- 关闭按钮 -->
+                <!-- Close button -->
                 <button @click="closeLightbox()"
                     class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
