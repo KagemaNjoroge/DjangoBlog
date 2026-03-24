@@ -1,9 +1,11 @@
 /**
- * DjangoBlog 前端主入口文件
- * 使用 Alpine.js + HTMX 实现现代化服务端渲染
- */
 
-// 导入样式文件（Vite开发模式必需）
+* Main entry file for the Django Blog frontend
+
+* Modern server-side rendering using Alpine.js + HTMX
+
+*/
+// Import style files (required for Vite development mode)
 import "./styles/main.css";
 
 import collapse from "@alpinejs/collapse";
@@ -12,66 +14,65 @@ import intersect from "@alpinejs/intersect";
 import Alpine from "alpinejs";
 import htmx from "htmx.org";
 
-// 导入Dark Mode（会自动初始化防闪烁）
+// Import Dark Mode (will automatically initialize anti-flicker)
 import { initDarkMode } from "./features/darkMode.js";
 
-// 注册Alpine插件
+// Register Alpine plugin
 Alpine.plugin(focus);
 Alpine.plugin(intersect);
 Alpine.plugin(collapse);
 
-// 导入组件
+//Import components
 import backToTop from "./components/backToTop.js";
 import commentSystem from "./components/commentSystem.js";
 import imageLightbox from "./components/imageLightbox.js";
 import navigation from "./components/navigation.js";
 import reactionPicker from "./components/reactionPicker.js";
-
-// 注册全局Alpine数据
+// Register global Alpine data components
 Alpine.data("commentSystem", commentSystem);
 Alpine.data("backToTop", backToTop);
 Alpine.data("navigation", navigation);
 Alpine.data("imageLightbox", imageLightbox);
 Alpine.data("reactionPicker", reactionPicker);
 
-// 全局工具函数
+// Global utility functions
 window.Alpine = Alpine;
 window.htmx = htmx;
 
-// 启动Alpine
+// Start Alpine
 Alpine.start();
 
-// 初始化Dark Mode
+// Initialize Dark Mode
 initDarkMode();
 
-// HTMX 配置
+// HTMX Configuration
 htmx.config.defaultSwapStyle = "innerHTML";
 htmx.config.defaultSwapDelay = 0;
 htmx.config.defaultSettleDelay = 20;
 
-// HTMX boost 配置：自动提取 #main 内容
+// HTMX boost configuration: Automatically extract #main content
 document.body.addEventListener("htmx:beforeSwap", function (evt) {
-  // 对于 boost 的请求，确保正确提取内容
+  // For Boost requests, ensure that the content is retrieved correctly.
   if (evt.detail.boosted && evt.detail.target.id === "main") {
     // console.log("HTMX boost navigation:", evt.detail.pathInfo.requestPath);
   }
 });
 
-// HTMX 加载完成后重新初始化 Alpine 组件
+//After HTMX loads, reinitialize the Alpine components.
 document.body.addEventListener("htmx:afterSwap", function (evt) {
-  // Alpine 会自动检测新的 DOM 元素并初始化
+  // Alpine automatically detects new DOM elements and initializes them.
 
-  // 滚动到顶部（可选）
+  // Scroll to top (optional)）
   if (evt.detail.boosted) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 });
 
-// NProgress页面加载进度条（保留原有功能）
+// NProgress page loading progress bar (original functionality retained)
 import NProgress from "./utils/nprogress.js";
 NProgress.configure({ showSpinner: false });
 
-// 页面加载时的进度条
+// Progress bar during page loading
 NProgress.start();
 NProgress.set(0.4);
 
@@ -84,12 +85,12 @@ window.addEventListener("DOMContentLoaded", () => {
   clearInterval(interval);
 });
 
-// 页面导航时的进度条
+// Progress bar during page navigation
 window.addEventListener("beforeunload", () => {
   NProgress.start();
 });
 
-// HTMX 事件监听 - 配合 NProgress
+// HTMX event listeners - in conjunction with NProgress
 document.body.addEventListener("htmx:beforeRequest", () => {
   NProgress.start();
 });

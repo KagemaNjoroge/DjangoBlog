@@ -1,7 +1,10 @@
 /**
- * 简化版 NProgress 进度条
- * 保留原有功能
- */
+
+* Simplified NProgress progress bar
+
+* Retain original functionality
+
+*/
 
 const NProgress = {
   settings: {

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  // 扫描这些文件以提取使用的CSS类
+ // Scan these files to extract the CSS classes used
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "../templates/**/*.html",
@@ -10,12 +10,12 @@ export default {
     "../oauth/templates/**/*.html",
   ],
 
-  // 深色模式配置 - 使用 data-theme 属性，与 dark_mode 插件配合
+  //Dark mode configuration - using the data-theme attribute in conjunction with the dark_mode plugin.
   darkMode: ['selector', '[data-theme="dark"]'],
 
   theme: {
     extend: {
-      // 自定义颜色，使用CSS变量支持动态主题
+      // Custom colors, using CSS variables to support dynamic themes
       colors: {
         primary: {
           50: 'rgb(var(--color-primary-50) / <alpha-value>)',
@@ -31,23 +31,23 @@ export default {
         },
       },
 
-      // Z-index 层级定义
+      // Z-index Level definition
       zIndex: {
-        'modal': '9999',  // 深色模式按钮等固定元素
+        'modal': '9999',  // Fixed elements such as dark mode buttons
       },
 
-      // 字体家族
+      // Font family
       fontFamily: {
         sans: ['Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
         mono: ['Consolas', 'Monaco', 'Courier New', 'monospace'],
       },
 
-      // 容器最大宽度，与现有布局一致
+      // The maximum width of the container is consistent with the existing layout.
       maxWidth: {
         'site': '1040px',
       },
 
-      // 动画
+      // animation
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',

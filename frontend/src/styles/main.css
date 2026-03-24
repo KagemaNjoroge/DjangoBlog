@@ -1,31 +1,47 @@
 /**
- * DjangoBlog 现代化样式系统
- * 完全基于 Tailwind CSS 重写，移除所有旧的CSS依赖
- *
- * 架构：
- * 1. Tailwind 基础层 - 重置和基础样式
- * 2. 组件层 - 可复用的组件类
- * 3. 工具层 - Tailwind 工具类
- * 4. 插件适配 - 兼容现有插件样式
- *
- * 响应式断点 (Mobile-First策略):
- * - Base (0px):    超小手机基准,所有设备
- * - sm (640px):    大手机/小平板
- * - md (768px):    平板竖屏
- * - lg (1024px):   平板横屏/小桌面 [侧边栏切换点]
- * - xl (1280px):   桌面
- * - 2xl (1536px):  大桌面
- *
- * 关键断点验证: 320px, 375px, 768px, 1024px, 1920px
- */
+
+* Modernized DjangoBlog style system
+
+* Completely rewritten based on Tailwind CSS, removing all old CSS dependencies
+
+*
+* Architecture:
+
+* 1. Tailwind Base Layer - Reset and basic styles
+
+* 2. Component Layer - Reusable component classes
+
+* 3. Utility Layer - Tailwind utility classes
+
+* 4. Plugin Adaptation - Compatible with existing plugin styles
+
+*
+* Responsive Breakpoints (Mobile-First Strategy):
+
+* - Base (0px): Base for ultra-small phones, all devices
+
+* - sm (640px): Large phones/small tablets
+
+* - md (768px): Tablet portrait mode
+
+* - lg (1024px): Tablet landscape mode/small desktop [sidebar toggle point]
+
+* - xl (1280px): Desktop
+
+* - 2xl (1536px): Large desktop
+
+*
+* Critical breakpoint verification: 320px, 375px, 768px, 1024px, 1920px
+
+*/
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ==================== 主题配色方案 CSS 变量 ==================== */
+/* ==================== Theme color scheme CSS variables ==================== */
 :root {
-  /* 默认主题：紫色 Purple Dream */
+ /* Default theme: Purple Dream */
   --color-primary-50: 240 249 255;
   --color-primary-100: 224 242 254;
   --color-primary-200: 186 230 253;
@@ -38,7 +54,7 @@
   --color-primary-900: 59 7 100;
 }
 
-/* 紫色主题 - Purple Dream */
+/* Purple Theme - Purple Dream */
 :root[data-color-scheme="purple"],
 body[data-color-scheme="purple"] {
   --color-primary-50: 250 245 255;
@@ -53,7 +69,7 @@ body[data-color-scheme="purple"] {
   --color-primary-900: 88 28 135;
 }
 
-/* 蓝色主题 - Ocean Blue */
+/* Blue theme - Ocean Blue */
 :root[data-color-scheme="blue"],
 body[data-color-scheme="blue"] {
   --color-primary-50: 239 246 255;
@@ -68,7 +84,7 @@ body[data-color-scheme="blue"] {
   --color-primary-900: 30 58 138;
 }
 
-/* 绿色主题 - Forest Green */
+/* Green theme - Forest Green */
 :root[data-color-scheme="green"],
 body[data-color-scheme="green"] {
   --color-primary-50: 240 253 244;
@@ -83,7 +99,7 @@ body[data-color-scheme="green"] {
   --color-primary-900: 20 83 45;
 }
 
-/* 橙色主题 - Sunset Orange */
+/* Orange theme - Sunset Orange */
 :root[data-color-scheme="orange"],
 body[data-color-scheme="orange"] {
   --color-primary-50: 255 247 237;
@@ -98,7 +114,7 @@ body[data-color-scheme="orange"] {
   --color-primary-900: 124 45 18;
 }
 
-/* 粉色主题 - Cherry Blossom */
+/* Cherry theme- Cherry Blossom */
 :root[data-color-scheme="pink"],
 body[data-color-scheme="pink"] {
   --color-primary-50: 253 242 248;
@@ -113,7 +129,7 @@ body[data-color-scheme="pink"] {
   --color-primary-900: 131 24 67;
 }
 
-/* 红色主题 - Ruby Red */
+/* Red theme - Ruby Red */
 :root[data-color-scheme="red"],
 body[data-color-scheme="red"] {
   --color-primary-50: 254 242 242;
@@ -128,7 +144,7 @@ body[data-color-scheme="red"] {
   --color-primary-900: 127 29 29;
 }
 
-/* 靛蓝主题 - Midnight Indigo */
+/* Indigo Theme - Midnight Indigo */
 :root[data-color-scheme="indigo"],
 body[data-color-scheme="indigo"] {
   --color-primary-50: 238 242 255;
@@ -143,7 +159,7 @@ body[data-color-scheme="indigo"] {
   --color-primary-900: 49 46 129;
 }
 
-/* 青色主题 - Teal Wave */
+/* Teal Theme - Teal Wave */
 :root[data-color-scheme="teal"],
 body[data-color-scheme="teal"] {
   --color-primary-50: 240 253 250;
@@ -158,45 +174,44 @@ body[data-color-scheme="teal"] {
   --color-primary-900: 19 78 74;
 }
 
-/* ==================== 基础样式层 ==================== */
+/* ==================== Basic style layer ==================== */
 @layer base {
-  /* HTML根元素 */
+  /* HTML root element */
   html {
     @apply scroll-smooth antialiased;
   }
 
-  /* Body基础样式 - 现代化柔和配色 */
+  /* Basic Body Style - Modern Soft Color Scheme */
   body {
-    /* 亮色模式：柔和的灰白背景(#f9fafb)，避免纯白刺眼 */
+    /* Light mode: Soft gray-white background (#f9fafb) to avoid the harshness of pure white */
     @apply bg-gray-50;
-    /* 暗色模式：深Slate背景(#0f172a)，比纯黑更现代 */
+  /* Dark mode: Deep Slate background (#0f172a), more modern than pure black */
     @apply dark:bg-slate-900;
-    /* 文本色：深灰色而非纯黑，更柔和 */
+   /* Text color: Dark gray instead of pure black, for a softer feel */
     @apply text-gray-800;
-    /* 暗色模式文本：柔和的灰白色(#e2e8f0) */
+    /* Dark mode text: a soft grayish-white (#e2e8f0) */
     @apply dark:text-slate-100;
     @apply font-sans;
-    line-height: 1.75; /* 舒适的阅读行高 */
-    font-size: 1rem; /* 16px基准字体 */
+    line-height: 1.75; /* Comfortable line height for reading */
+    font-size: 1rem; /* 16px base font */
   }
 
-  /* 链接样式 */
+ /* Link style */
   a {
     @apply text-primary-500 hover:text-primary-600 transition-colors duration-200;
     @apply dark:text-primary-400 dark:hover:text-primary-300;
   }
 
-  /* 标题样式 - 清晰的视觉层次，现代化柔和配色 */
+ /* Heading style - clear visual hierarchy, modern and soft color scheme */
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold;
-    /* 亮色模式：深灰色(#1f2937)而非纯黑，更柔和现代 */
+/* Light mode: Dark gray (#1f2937) instead of pure black, for a softer, more modern look */
     @apply text-gray-800;
-    /* 暗色模式：亮灰白色(#f1f5f9)，高对比但不刺眼 */
+    /* Dark mode: Light grayish-white (#f1f5f9), high contrast but not glaring */
     @apply dark:text-slate-100;
-    line-height: 1.25; /* 紧凑的标题行高 */
+    line-height: 1.25; /* Compact header line height */
   }
-
-  /* 排版比例 - 明显的层次梯度 */
+/* Proportioning - Clear hierarchical gradient */
   h1 {
     font-size: 2.5rem; /* 40px */
     @apply mt-0 mb-6;
@@ -222,37 +237,36 @@ body[data-color-scheme="teal"] {
     @apply mt-4 mb-2;
   }
 
-  /* 段落和文本 */
+ /* Paragraphs and text */
   p {
     @apply mb-4;
-    line-height: 1.75; /* 继承body的行高 */
+    line-height: 1.75;/* Inherit the line height of the body element */
   }
 
   /* 段落间距优化 */
   .prose p,
   .entry-content p {
-    @apply mb-6; /* 增加段落间距，提高可读性 */
+    @apply mb-6;/* Inherit the line height of the body element */
   }
 
-  /* 列表样式 */
+  /* List style */
   ul, ol {
     @apply mb-4;
   }
 
-  /* 图片 */
+  /* images */
   img {
     @apply max-w-full h-auto;
   }
 
-  /* 代码块 */
-  /* 内联代码 */
+/* Image */ /* Code block */
+/* Inline code */
   code {
     @apply px-1.5 py-0.5 bg-gray-100 rounded text-sm;
     color: #24292e;
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   }
-
-  /* 深色模式 - 内联代码 */
+/* Dark mode - inline code */
   [data-theme="dark"] code,
   [data-theme="dark"] kbd,
   [data-theme="dark"] tt,
@@ -261,7 +275,7 @@ body[data-color-scheme="teal"] {
     color: #d4d4d4 !important;
   }
 
-  /* 代码块容器 */
+  /* Code block container */
   pre {
     @apply p-3 md:p-4 rounded-lg overflow-x-auto mb-4;
     @apply text-sm md:text-base;
@@ -271,7 +285,7 @@ body[data-color-scheme="teal"] {
     -webkit-overflow-scrolling: touch;
   }
 
-  /* 代码块自定义scrollbar样式 - 细小、半透明 */
+/* Customize the scrollbar style for the code block - thin, semi-transparent */
   pre::-webkit-scrollbar {
     height: 6px;
   }
@@ -290,7 +304,7 @@ body[data-color-scheme="teal"] {
     background: rgba(0, 0, 0, 0.3);
   }
 
-  /* 深色模式的scrollbar */
+  /* Dark mode scrollbar */
   [data-theme="dark"] pre::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
   }
@@ -303,14 +317,14 @@ body[data-color-scheme="teal"] {
     background: rgba(255, 255, 255, 0.3);
   }
 
-  /* 深色模式 - 代码块容器 */
+/* Dark mode - code block container */
   [data-theme="dark"] pre {
     background-color: #1e1e1e !important;
     color: #d4d4d4 !important;
     border-color: #30363d;
   }
 
-  /* 代码块中的code标签 */
+ /* code tags within code blocks */
   pre code {
     @apply p-0 bg-transparent;
     @apply text-sm md:text-base;
@@ -319,8 +333,7 @@ body[data-color-scheme="teal"] {
     border: none;
     display: block;
   }
-
-  /* 深色模式 - 代码块中的code */
+/* Dark mode - code within a code block */
   [data-theme="dark"] pre code {
     background-color: transparent !important;
     color: #d4d4d4 !important;
@@ -328,7 +341,7 @@ body[data-color-scheme="teal"] {
     border: none;
   }
 
-  /* 表格 */
+  /* sheet */
   table {
     @apply w-full mb-4 border-collapse;
   }
@@ -341,25 +354,25 @@ body[data-color-scheme="teal"] {
     @apply bg-gray-100 dark:bg-gray-800 font-semibold;
   }
 
-  /* 引用块 */
+  /* Reference block */
   blockquote {
     @apply pl-4 py-2 border-l-4 border-primary-500 italic;
     @apply bg-gray-50 dark:bg-gray-800 mb-4;
   }
 
-  /* HR分隔线 */
+/* HR separator */
   hr {
     @apply my-8 border-t border-gray-300 dark:border-gray-700;
   }
 }
 
-/* ==================== 组件层 - 通用组件 ==================== */
+/* ==================== Component Layer - General Components ==================== */
 @layer components {
-  /* ========== 按钮组件 ========== */
+  /* ========== button component ========== */
   .btn {
     @apply inline-flex items-center justify-center;
     @apply px-4 py-2 rounded-md font-medium;
-    @apply min-h-[44px] min-w-[44px]; /* 触摸目标最小尺寸 */
+    @apply min-h-[44px] min-w-[44px]; /* Minimum size of the target to be touched */
     @apply transition-all duration-200;
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
     @apply disabled:opacity-50 disabled:cursor-not-allowed;
@@ -385,7 +398,7 @@ body[data-color-scheme="teal"] {
     @apply px-6 py-3 text-lg;
   }
 
-  /* ========== 表单组件 ========== */
+  /* ========== form component ========== */
   .input, .textarea {
     @apply w-full px-3 py-2 border border-gray-300 rounded-md;
     @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
@@ -402,28 +415,28 @@ body[data-color-scheme="teal"] {
     @apply bg-gray-100 dark:bg-gray-900 cursor-not-allowed opacity-60;
   }
 
-  /* ========== 卡片组件 - 增强视觉层次，现代化配色 ========== */
+  /* ========== Card component - Enhances visual hierarchy, modern color scheme ========== */
   .card {
-    /* 亮色模式：纯白卡片配柔和边框 */
+    /* Light Color Mode: Pure white card with soft border*/
     @apply bg-white rounded-xl p-6;
     @apply border-2 border-gray-200;
-    /* 暗色模式：深slate卡片配柔和边框 */
+    /* Dark Mode: Deep slate cards with soft borders */
     @apply dark:bg-slate-800 dark:border-slate-700;
     @apply transition-all duration-300;
-    /* 增强阴影效果 - 亮色模式 */
+    /* Enhance shadow effects - Light mode*/
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   .card:hover {
-    /* 亮色模式hover：主题色边框 */
+    /* Light color hover: Theme color border */
     @apply border-primary-300;
-    /* 暗色模式hover：稍亮的主题色边框 */
+    /* Dark mode hover: Slightly lighter theme color border*/
     @apply dark:border-primary-600;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     transform: translateY(-2px);
   }
 
-  /* 深色模式卡片阴影 - 更深更自然 */
+  /* Dark Mode Card Shadows - Deeper and More Natural */
   [data-theme="dark"] .card {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
@@ -432,21 +445,21 @@ body[data-color-scheme="teal"] {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
   }
 
-  /* ========== 站点布局 ========== */
-  /* 网站容器 */
+  /* ========== site layout ========== */
+  /* website container */
   .site {
     @apply min-h-screen flex flex-col;
   }
 
-  /* 头部 - 带渐变背景和装饰 */
+  /* Head - with gradient background and decorations */
   .site-header {
     @apply shadow-md;
     @apply border-b border-gray-200 dark:border-gray-700;
     @apply sticky top-0 z-40;
     @apply relative;
-    /* 移除 backdrop-blur-md 以避免影响上层按钮的清晰度 */
+    /*Remove backdrop-blur-md to avoid affecting the clarity of the upper button.*/
     @apply bg-opacity-95;
-    /* 更明显的渐变背景 - 使用配色方案变量 */
+    /* More pronounced gradient background - using color scheme variables */
     background: linear-gradient(135deg,
       rgba(var(--color-primary-500), 0.08) 0%,
       rgba(var(--color-primary-600), 0.08) 50%,
@@ -454,7 +467,7 @@ body[data-color-scheme="teal"] {
       white;
   }
 
-  /* 深色模式的渐变 */
+  /* Gradient in Dark Mode */
   [data-theme="dark"] .site-header {
     background: linear-gradient(135deg,
       rgba(var(--color-primary-500), 0.15) 0%,
@@ -463,7 +476,7 @@ body[data-color-scheme="teal"] {
       #1f2937;
   }
 
-  /* 顶部装饰线 - 增加高度和动画 */
+  /* Top decorative line - adds height and animation*/
   .site-header::before {
     content: '';
     position: absolute;
@@ -479,7 +492,7 @@ body[data-color-scheme="teal"] {
       rgb(var(--color-primary-600)) 100%);
     background-size: 200% 100%;
     animation: gradientShift 8s ease infinite;
-    pointer-events: none; /* 装饰元素不应阻止点击 */
+    pointer-events: none; /* Decorative elements should not prevent clicks. */
   }
 
   @keyframes gradientShift {
@@ -487,16 +500,16 @@ body[data-color-scheme="teal"] {
     50% { background-position: 100% 0%; }
   }
 
-  /* Header内容容器 - 增加垂直空间，统一容器宽度 */
+  /* Header Content container - Increase vertical space and unify container width */
   .header-content {
     @apply flex items-center justify-between px-3 md:px-6 py-6 md:py-8;
-    /* 从max-w-7xl增加到max-w-screen-2xl，与主内容容器保持一致 */
+    /* The value was increased from max-w-7xl to max-w-screen-2xl to align with the main content container.*/
     @apply max-w-screen-2xl mx-auto;
     @apply gap-4 md:gap-6;
     @apply relative;
   }
 
-  /* 装饰性背景元素 */
+  /* decorative background elements */
   .header-content::before {
     content: '';
     position: absolute;
@@ -524,28 +537,28 @@ body[data-color-scheme="teal"] {
 
   .site-header hgroup {
     @apply text-left;
-    /* 改为 flex-shrink，只占据内容宽度，不扩展占据整个空间 */
+    /* Change it to flex-shrink, which only occupies the content width and does not expand to occupy the entire space. */
     @apply flex-shrink;
     @apply px-0 py-0;
     @apply bg-transparent;
     @apply min-w-0;
-    /* 移除 z-10，不需要提升层级 */
+    /* Removing z-10 does not require upgrading the tier. */
   }
 
   .site-title {
     @apply text-4xl md:text-6xl lg:text-7xl font-bold;
     @apply mb-2;
-    /* 移除 truncate，让标题自然换行而不是占据整行 */
+    /* Removing z-10 does not require raising the level; removing truncate allows the heading to wrap naturally instead of taking up an entire line. */
   }
 
   .site-title a {
     @apply no-underline;
-    /* 改为 inline-flex，只占据文字宽度 */
+    /* Change it to inline-flex, so it only occupies the width of the text.*/
     @apply inline-flex items-center gap-3;
     @apply transition-all duration-300;
     @apply relative;
-    /* 文字渐变效果 - 使用配色方案变量 */
-    @apply text-primary-500; /* 降级颜色 */
+    /* Text gradient effect - using color scheme variables */
+    @apply text-primary-500; /* downgrade color */
     background: linear-gradient(135deg,
       rgb(var(--color-primary-500)) 0%,
       rgb(var(--color-primary-600)) 50%,
@@ -557,7 +570,7 @@ body[data-color-scheme="teal"] {
     animation: textShimmer 8s ease-in-out infinite;
   }
 
-  /* 浏览器不支持background-clip: text时的降级样式 */
+  /* Degraded styles when the browser does not support background-clip: text */
   @supports not (-webkit-background-clip: text) {
     .site-title a {
       @apply text-primary-500;
@@ -570,9 +583,9 @@ body[data-color-scheme="teal"] {
     100% { background-position: 200% 50%; }
   }
 
-  /* 深色模式下的标题 */
+  /* Titles in Dark Mode */
   [data-theme="dark"] .site-title a {
-    @apply text-primary-400; /* 降级颜色 */
+    @apply text-primary-400; /* downgrade color */
     background: linear-gradient(135deg,
       rgb(var(--color-primary-400)) 0%,
       rgb(var(--color-primary-300)) 50%,
@@ -583,7 +596,7 @@ body[data-color-scheme="teal"] {
     background-clip: text;
   }
 
-  /* 添加标题前的装饰图标 */
+  /* Add decorative icons before the title */
   .site-title a::before {
     content: '✦';
     font-size: 0.6em;
@@ -598,7 +611,7 @@ body[data-color-scheme="teal"] {
     transform: translateX(0) rotate(360deg);
   }
 
-  /* 添加标题hover下划线效果 */
+  /* Add title hover underline effect */
   .site-title a::after {
     content: '';
     position: absolute;
@@ -616,7 +629,7 @@ body[data-color-scheme="teal"] {
   }
 
   .site-title a:hover::after {
-    /* 从中心向两边扩展，覆盖文字区域 */
+/* Expand outwards from the center to cover the text area */
     width: 100%;
   }
 
@@ -625,7 +638,7 @@ body[data-color-scheme="teal"] {
     @apply opacity-90;
     @apply font-light italic;
     @apply relative;
-    /* 添加微妙的动画 */
+    /* Add subtle animations */
     animation: fadeInUp 0.6s ease-out 0.2s both;
   }
 
@@ -640,7 +653,7 @@ body[data-color-scheme="teal"] {
     }
   }
 
-  /* 快捷入口图标组 */
+  /* Quick Access Icon Group */
   .header-actions {
     @apply flex items-center gap-1.5;
     @apply relative;
@@ -649,7 +662,7 @@ body[data-color-scheme="teal"] {
 
   .header-icon-btn {
     @apply flex items-center justify-center;
-    @apply w-12 h-12 md:w-11 md:h-11 rounded-full;  /* 移动端48px，符合触摸标准 */
+    @apply w-12 h-12 md:w-11 md:h-11 rounded-full;  /* 48px on mobile devices, conforming to touch standards */
     @apply text-gray-700 dark:text-gray-300;
     @apply bg-white dark:bg-gray-800;
     @apply hover:bg-gradient-to-br hover:from-primary-500 hover:to-primary-600;
@@ -665,7 +678,7 @@ body[data-color-scheme="teal"] {
     @apply w-5 h-5 md:w-7 md:h-7;
   }
 
-  /* 搜索框 - 下拉式（在搜索图标下方） */
+/* Search box - dropdown (below the search icon) */
   .header-search {
     @apply absolute right-0 z-50;
     @apply bg-white dark:bg-gray-800;
@@ -673,7 +686,7 @@ body[data-color-scheme="teal"] {
     @apply border border-gray-200 dark:border-gray-700;
     @apply mt-2;
     @apply w-[calc(100vw-2rem)] max-w-80;
-    /* 定位在header-actions下方 */
+ /* Positioned below header-actions */
     top: 100%;
   }
 
@@ -706,13 +719,13 @@ body[data-color-scheme="teal"] {
     @apply w-7 h-7;
   }
 
-  /* 导航菜单 - 降低padding */
+ /* Navigation menu - Reduce padding */
   .main-navigation {
     @apply bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700;
     @apply relative;
   }
 
-  /* 菜单切换按钮（仅移动端显示） */
+ /* Menu toggle button (mobile only) */
   .menu-toggle {
     @apply md:hidden flex items-center justify-center;
     @apply w-full px-4 py-2.5 bg-white dark:bg-gray-800;
@@ -726,12 +739,12 @@ body[data-color-scheme="teal"] {
     @apply sr-only;
   }
 
-  /* 菜单容器 - 降低padding */
+/* Menu container - reduce padding */
   .main-navigation ul {
     @apply flex flex-wrap gap-1.5 px-4 py-2;
   }
 
-  /* 移动端：菜单垂直排列 */
+/* Mobile devices: Menus arranged vertically */
   @media (max-width: 767px) {
     .main-navigation ul {
       @apply flex-col gap-0 p-0;
@@ -756,7 +769,7 @@ body[data-color-scheme="teal"] {
     @apply list-none;
   }
 
-  /* 导航链接 - 增强样式和动画 */
+ /* Navigation links - Enhanced styling and animation */
   .main-navigation a {
     @apply px-3 py-1.5 rounded-lg text-gray-700 dark:text-gray-300;
     @apply hover:bg-gradient-to-r hover:from-primary-500 hover:to-primary-600 hover:text-white;
