@@ -264,6 +264,7 @@ STATICFILES = os.path.join(BASE_DIR, "static")
 
 # 添加插件静态文件目录
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "blog/static"),
     os.path.join(BASE_DIR, "plugins"),  # 让Django能找到插件的静态文件
 ]
 
