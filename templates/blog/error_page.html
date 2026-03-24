@@ -27,12 +27,12 @@
 {% endblock %}
 {% block content %}
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-    <!-- 主内容区域 - 调整为9列 -->
+    <!-- Main content area - adjusted to 9 columns -->
     <div id="primary" class="site-content lg:col-span-8">
         <div id="content" role="main" class="flex items-center justify-center min-h-[60vh]">
 
             <div class="text-center px-4">
-                <!-- 错误图标 -->
+                <!-- Error icon -->
                 <div
                     class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-red-500 to-orange-600 mb-8 shadow-lg">
                     {% if statuscode == '404' %}
@@ -58,19 +58,19 @@
                     {% endif %}
                 </div>
 
-                <!-- 错误代码 -->
+                <!-- Error code -->
                 {% if statuscode %}
                 <div class="text-6xl md:text-8xl font-bold text-gray-200 dark:text-gray-700 mb-4">
                     {{ statuscode }}
                 </div>
                 {% endif %}
 
-                <!-- 错误消息 -->
+                <!-- Error message -->
                 <h1 class="text-2xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                     {{ message }}
                 </h1>
 
-                <!-- 操作按钮 -->
+                <!-- Operation button -->
                 <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
                     <a href="/"
                         class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
@@ -94,7 +94,7 @@
         </div><!-- #content -->
     </div><!-- #primary -->
 
-    <!-- 侧边栏 - 调整为3列 -->
+    <!-- Sidebar - Adjusted to 3 columns -->
     <aside id="secondary" class="widget-area lg:col-span-4">
         {% load_sidebar user 'i' %}
     </aside>

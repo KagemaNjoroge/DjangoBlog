@@ -18,11 +18,11 @@
 {% endblock %}
 {% block content %}
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-    <!-- 主内容区域 -->
+    <!-- main content area -->
     <div id="primary" class="site-content lg:col-span-8">
         <div id="content" role="main">
 
-            <!-- 面包屑导航 -->
+            <!-- Breadcrumbs -->
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
@@ -45,7 +45,7 @@
                 </ol>
             </nav>
 
-            <!-- 归档页面头部 -->
+            <!-- Archive page header -->
             <header class="archive-header-modern">
                 <div class="archive-hero">
                     <div class="archive-icon">
@@ -59,13 +59,13 @@
                 </div>
             </header>
 
-            <!-- 归档时间线 -->
+        <!-- Archived timeline -->
             <div class="archive-timeline">
                 {% regroup article_list by pub_time.year as year_post_group %}
 
                 {% for year in year_post_group %}
                 <div class="timeline-year-block">
-                    <!-- 年份标签 -->
+                <!-- Year tag -->
                     <div class="timeline-year-badge">
                         <span class="year-number">{{ year.grouper }}</span>
                         <span class="year-count">{{ year.list|length }} 篇</span>
@@ -75,14 +75,14 @@
 
                     {% for month in month_post_group %}
                     <div class="timeline-month-block">
-                        <!-- 月份标签 -->
+                    <!-- Month tag -->
                         <div class="timeline-month-header">
                             <div class="timeline-dot"></div>
                             <h3 class="month-title">{{ month.grouper }}月</h3>
                             <span class="month-count">{{ month.list|length }} 篇</span>
                         </div>
 
-                        <!-- 文章列表 -->
+            <!-- Article List -->
                         <ul class="timeline-articles">
                             {% for article in month.list %}
                             <li class="timeline-article-item">
@@ -128,7 +128,7 @@
         </div><!-- #content -->
     </div><!-- #primary -->
 
-    <!-- 侧边栏 - 移动端(<1024px)自动堆叠到主内容下方 -->
+<!-- Sidebar - Mobile (<1024px) automatically stacks below the main content -->
     <aside id="secondary" class="widget-area lg:col-span-4">
         {% load_sidebar user 'i' %}
     </aside>

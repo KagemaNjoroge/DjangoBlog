@@ -60,10 +60,10 @@
     <div class="entry-content max-w-full" itemprop="articleBody">
         {% if  isindex %}
         {% if query %}
-        {# 搜索结果页：先生成摘要HTML，然后高亮关键词 #}
+        {#Search results page: First generate summary HTML, then highlight keywords. #}
         {% render_article_content article True %}
         {% else %}
-        {# 普通列表页：显示正常摘要 #}
+        {# Normal list page: Displays normal summary #}
         {% render_article_content article True %}
         {% endif %}
         <p class='read-more mt-4'><a href=' {{ article.get_absolute_url }}'
@@ -91,7 +91,7 @@
 
 </article><!-- #post -->
 
-<!-- 文章底部插件 -->
+<!-- Article bottom plugin -->
 {% if not isindex %}
 {% render_plugin_widgets 'article_bottom' article=article %}
 {% endif %}

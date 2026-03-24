@@ -1,4 +1,4 @@
-<!-- 面包屑导航 - 保留schema.org标记用于SEO -->
+<!-- Breadcrumb navigation - Retain schema.org tags for SEO -->
 <nav aria-label="breadcrumb" class="breadcrumb-nav">
     <ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
         {% for name,url in names %}
@@ -8,7 +8,7 @@
                 </a>
                 <meta itemprop="position" content="{{ forloop.counter }}"/>
             </li>
-            <!-- 分隔符 -->
+        <!-- Separator -->
             <li class="breadcrumb-separator" aria-hidden="true">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>

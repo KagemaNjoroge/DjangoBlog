@@ -62,7 +62,7 @@
 
     <div class="entry-content" itemprop="articleBody">
         {% if isindex %}
-        {# 列表页显示search摘要 #}
+        {# List page displays search summary #}
         {% if highlighted.body %}
         <div class="search-snippet">
             {% for snippet in highlighted.body %}
@@ -76,7 +76,8 @@
             <a href='{{ article.get_absolute_url }}'>Read more</a>
         </p>
         {% else %}
-        {# 详情页显示完整内容（不高亮，因为高亮只在search结果列表有意义） #}
+        {# The details page displays the full content (without highlighting, as highlighting is only meaningful in the search
+        results list). #}
         {% if article.show_toc %}
         {% get_markdown_toc article.body as toc %}
         <b>{% trans 'toc' %}:</b>
@@ -92,7 +93,7 @@
     {% load_article_metas article user %}
 </article>
 
-<!-- 文章底部插件 -->
+<!-- Article bottom plugin -->
 {% if not isindex %}
 {% render_plugin_widgets 'article_bottom' article=article %}
 {% endif %}
