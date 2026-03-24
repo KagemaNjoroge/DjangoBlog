@@ -2,17 +2,16 @@ version: '3'
 
 services:
   db:
-    image: mysql:latest
+    image: postgres:latest
     restart: always
     environment:
-      - MYSQL_DATABASE=djangoblog
-      - MYSQL_ROOT_PASSWORD=QQQQwww123!@#
+      - POSTGRES_DB=djangoblog
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=QQQQwww123!@#
     ports:
-      - 3306:3306
+      - 5432:5432
     volumes:
-      - mysql_data:/var/lib/mysql
-    depends_on:
-      - redis
+      - postgres_data:/var/lib/postgresql/data
     container_name: db
 
   djangoblog:
@@ -30,11 +29,11 @@ services:
       - ./uploads:/code/djangoblog/uploads
     environment:
       - DJANGO_DEBUG=False
-      - DJANGO_MYSQL_DATABASE=djangoblog
-      - DJANGO_MYSQL_USER=root
-      - DJANGO_MYSQL_PASSWORD=QQQQwww123!@#
-      - DJANGO_MYSQL_HOST=db
-      - DJANGO_MYSQL_PORT=3306
+      - DJANGO_POSTGRES_DATABASE=djangoblog
+      - DJANGO_POSTGRES_USER=postgres
+      - DJANGO_POSTGRES_PASSWORD=QQQQwww123!@#
+      - DJANGO_POSTGRES_HOST=db
+      - DJANGO_POSTGRES_PORT=5432
       - DJANGO_REDIS_URL=redis:6379
     links:
       - db
@@ -64,5 +63,5 @@ services:
       - "6379:6379"
 
 volumes:
-  mysql_data:
+  postgres_data:
   static_files:
