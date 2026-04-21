@@ -34,7 +34,7 @@ dependencies = [
     "pyecharts==2.0.9",
     "pygments==2.19.2",
     "python-dateutil==2.9.0.post0",
-    "python-dotenv>=1.2.1",
+    "python-dotenv>=1.2.2",
     "python-ipware==3.0.0",
     "python-logstash==0.4.8",
     "python-slugify==8.0.4",
